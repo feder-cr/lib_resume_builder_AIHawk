@@ -1,4 +1,9 @@
+# Include tutti i file e le cartelle nel pacchetto
 include README.md
-include lib_resume_builder_AIHawk/resume_style/*
-include lib_resume_builder_AIHawk/resume_prompt/*
-include lib_resume_builder_AIHawk/resume_job_description_prompt/*
+include LICENSE
+
+# Include le sottocartelle specificate nel pacchetto lib_resume_builder_AIHawk
+recursive-include lib_resume_builder_AIHawk/resume_job_description_prompt *
+recursive-include lib_resume_builder_AIHawk/resume_prompt *
+recursive-include lib_resume_builder_AIHawk/resume_style *
+
