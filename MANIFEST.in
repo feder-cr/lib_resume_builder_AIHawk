@@ -1,4 +1,4 @@
 include README.md
-recursive-include lib_resume_builder_AIHawk/resume_style *
-recursive-include lib_resume_builder_AIHawk/resume_prompt *
-recursive-include lib_resume_builder_AIHawk/resume_job_description_prompt *
+include lib_resume_builder_AIHawk/resume_style/*
+include lib_resume_builder_AIHawk/resume_prompt/*
+include lib_resume_builder_AIHawk/resume_job_description_prompt/*
