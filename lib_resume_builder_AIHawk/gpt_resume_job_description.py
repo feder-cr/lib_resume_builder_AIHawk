@@ -6,6 +6,7 @@ import time
 from datetime import datetime
 from typing import Dict, List
 
+
 from dotenv import load_dotenv
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.text_splitter import TokenTextSplitter
@@ -33,7 +34,7 @@ class LLMLogger:
 
     @staticmethod
     def log_request(prompts, parsed_reply: Dict[str, Dict]):
-        calls_log = global_config.LOG_OUTPUT_FILE_PATH
+        calls_log = global_config.LOG_OUTPUT_FILE_PATH / "open_ai_calls.json"
         if isinstance(prompts, StringPromptValue):
             prompts = prompts.text
         elif isinstance(prompts, Dict):
@@ -154,7 +155,7 @@ class LLMResumeJobDescription:
             os.remove(temp_file_path)
         text_splitter = TokenTextSplitter(chunk_size=500, chunk_overlap=50)
         all_splits = text_splitter.split_documents(document)
-        vectorstore = FAISS.from_documents(documents=all_splits, embedding=OpenAIEmbeddings())
+        vectorstore = FAISS.from_documents(documents=all_splits, embedding=OpenAIEmbeddings(openai_api_key=openai_api_key))
         prompt = PromptTemplate(
             template="""
             You are an expert job description analyst. Your role is to meticulously analyze and interpret job descriptions. 

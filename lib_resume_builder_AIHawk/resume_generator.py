@@ -24,7 +24,6 @@ class ResumeGenerator:
                 os.remove(global_config.OUTPUT_FILE_PATH)
             with open(global_config.OUTPUT_FILE_PATH, 'x', encoding="utf-8") as output_file:
                 output_file.write(message)
-            print(f"The resume has been saved to {global_config.OUTPUT_FILE_PATH}")
 
     def create_resume(self, style_path):
         strings = load_module(global_config.STRINGS_MODULE_RESUME_PATH, global_config.STRINGS_MODULE_NAME)
