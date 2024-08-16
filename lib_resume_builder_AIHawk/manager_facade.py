@@ -1,18 +1,28 @@
 import base64
 import os
+from pathlib import Path
 import inquirer
 import requests
 import json
+from lib_resume_builder_AIHawk.config import Config
 from lib_resume_builder_AIHawk.utils import HTML_to_PDF
 
 
 class FacadeManager:
-    def __init__(self, config, style_manager, resume_generator, resume_object):
-        self.config = config
+    def __init__(self, api_key, style_manager, resume_generator, resume_object, log_path):
+        self.config = Config(
+        STRINGS_MODULE_RESUME_PATH=Path("resume_prompt/strings_feder-cr.py").resolve(),
+        STRINGS_MODULE_RESUME_JOB_DESCRIPTION_PATH=Path("resume_job_description_prompt/strings_feder-cr.py").resolve(),
+        STRINGS_MODULE_NAME="strings_feder_cr",
+        STYLES_DIRECTORY=Path("resume_style").resolve(),
+        OUTPUT_FILE_PATH=Path("temp_resume.html").resolve(),
+        LOG_OUTPUT_FILE_PATH=log_path,
+        API_KEY=api_key
+        )
         self.style_manager = style_manager
-        self.style_manager.set_styles_directory(config.STYLES_DIRECTORY)
+        self.style_manager.set_styles_directory(self.config.STYLES_DIRECTORY)
         self.resume_generator = resume_generator
-        self.resume_generator.set_config(config)
+        self.resume_generator.set_config(self.config)
         self.resume_generator.set_resume_object(resume_object)
         self.job_description_url = None
 
@@ -31,33 +41,26 @@ class FacadeManager:
         ]
         return inquirer.prompt(questions)['url']
 
-    def run(self):
+    def pdf_base64(self):
         while True:
             action = self.prompt_user(['Create Resume', 'Create Resume based on Job Description', 'Exit'], "What would you like to do?")
-            
             if action == 'Exit':
                 print("Exiting...")
                 break
-            
             styles = self.style_manager.get_styles()
             if not styles:
                 print("No styles available")
                 continue
-
             formatted_choices = self.style_manager.format_choices(styles)
             selected_choice = self.prompt_user(formatted_choices, "Which style would you like to adopt?")
             selected_style = selected_choice.split(' (')[0]
             style_path = self.style_manager.get_style_path(selected_style)
-
             if action == 'Create Resume':
                 self.resume_generator.create_resume(style_path)
             elif action == 'Create Resume based on Job Description':
                 url_job_description = self.prompt_for_url("Please enter the URL of the job description:")
                 self.resume_generator.create_resume_job_description(style_path, url_job_description)
-
-            if os.path.exists("resume.pdf"):
-                os.remove("resume.pdf")
-            with open("resume.pdf", "xb") as f:
-                    f.write(base64.b64decode(HTML_to_PDF(self.config.OUTPUT_FILE_PATH)))
-            print("Finish...")
-            exit()
+            pdf_base64 = base64.b64decode(HTML_to_PDF(self.config.OUTPUT_FILE_PATH))
+            if os.path.exists(self.config.OUTPUT_FILE_PATH):
+                os.remove(self.config.OUTPUT_FILE_PATH)
+        return pdf_base64
