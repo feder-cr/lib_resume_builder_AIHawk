@@ -7,16 +7,20 @@ import json
 from lib_resume_builder_AIHawk.config import global_config
 from lib_resume_builder_AIHawk.utils import HTML_to_PDF
 
-
 class FacadeManager:
     def __init__(self, api_key, style_manager, resume_generator, resume_object, log_path):
-        global_config.STRINGS_MODULE_RESUME_PATH=Path("resume_prompt/strings_feder-cr.py").resolve()
-        global_config.STRINGS_MODULE_RESUME_JOB_DESCRIPTION_PATH=Path("resume_job_description_prompt/strings_feder-cr.py").resolve()
-        global_config.STRINGS_MODULE_NAME="strings_feder_cr"
-        global_config.STYLES_DIRECTORY=Path("resume_style").resolve()
-        global_config.OUTPUT_FILE_PATH=Path("temp_resume.html").resolve()
-        global_config.LOG_OUTPUT_FILE_PATH=log_path
-        global_config.API_KEY=api_key
+        # Ottieni il percorso assoluto della directory della libreria
+        lib_directory = Path(__file__).resolve().parent
+
+        # Imposta i percorsi relativi rispetto alla directory della libreria
+        global_config.STRINGS_MODULE_RESUME_PATH = lib_directory / "resume_prompt/strings_feder-cr.py"
+        global_config.STRINGS_MODULE_RESUME_JOB_DESCRIPTION_PATH = lib_directory / "resume_job_description_prompt/strings_feder-cr.py"
+        global_config.STRINGS_MODULE_NAME = "strings_feder_cr"
+        global_config.STYLES_DIRECTORY = lib_directory / "resume_style"
+        global_config.OUTPUT_FILE_PATH = lib_directory / "temp_resume.html"
+        global_config.LOG_OUTPUT_FILE_PATH = log_path
+        global_config.API_KEY = api_key
+        
         self.style_manager = style_manager
         self.style_manager.set_styles_directory(global_config.STYLES_DIRECTORY)
         self.resume_generator = resume_generator
