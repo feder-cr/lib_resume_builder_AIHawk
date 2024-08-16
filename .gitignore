@@ -1,0 +1,9 @@
+__pycache__
+.venv
+log
+/src/__pycache__
+test*
+secrets.yaml
+resume*
+my*
+plain_text_resume.yaml
