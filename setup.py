@@ -9,7 +9,7 @@ setup(
     author='feder-cr',
     author_email='federico.elia.majo@gmail.com',
     url='https://github.com/feder-cr/lib_resume_builder_AIHawk',
-    packages=find_packages(),
+    packages=find_packages(include=['lib_resume_builder_AIHawk', 'lib_resume_builder_AIHawk.*']),
     install_requires=[ 
         'langchain==0.2.11',
         'langchain-community==0.2.10',
@@ -26,7 +26,7 @@ setup(
         'unstructured',
         'faiss-cpu',
     ],
-    classifiers=[  # Classificatori che descrivono il pacchetto
+    classifiers=[
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
