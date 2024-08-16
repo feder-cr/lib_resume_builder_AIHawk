@@ -3,6 +3,5 @@ __pycache__
 log
 /src/__pycache__
 test*
-secrets.yaml
 my*
 plain_text_resume.yaml
