@@ -2,11 +2,11 @@ import os
 from typing import Any
 from string import Template
 from typing import Any
-from cv_ai_hawk_library.resume import Resume
-from cv_ai_hawk_library.gpt_resume import LLMResumer
-from cv_ai_hawk_library.gpt_resume_job_description import LLMResumeJobDescription
-import cv_ai_hawk_library.utils as utils
-from cv_ai_hawk_library.module_loader import load_module
+from lib_resume_builder_AIHawk.resume import Resume
+from lib_resume_builder_AIHawk.gpt_resume import LLMResumer
+from lib_resume_builder_AIHawk.gpt_resume_job_description import LLMResumeJobDescription
+import lib_resume_builder_AIHawk.utils as utils
+from lib_resume_builder_AIHawk.module_loader import load_module
 
 class ResumeGenerator:
     def __init__(self):

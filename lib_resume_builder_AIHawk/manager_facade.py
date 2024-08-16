@@ -3,7 +3,7 @@ import os
 import inquirer
 import requests
 import json
-from cv_ai_hawk_library.utils import HTML_to_PDF
+from lib_resume_builder_AIHawk.utils import HTML_to_PDF
 
 
 class FacadeManager:
