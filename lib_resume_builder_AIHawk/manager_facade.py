@@ -20,7 +20,6 @@ class FacadeManager:
         self.style_manager = style_manager
         self.style_manager.set_styles_directory(global_config.STYLES_DIRECTORY)
         self.resume_generator = resume_generator
-        self.resume_generator.set_config(global_config)
         self.resume_generator.set_resume_object(resume_object)
         self.job_description_url = None
 
