@@ -10,7 +10,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompt_values import StringPromptValue
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
-
+from lib_resume_builder_AIHawk.config import global_config
 load_dotenv()
 
 
@@ -21,7 +21,7 @@ class LLMLogger:
 
     @staticmethod
     def log_request(prompts, parsed_reply: Dict[str, Dict]):
-        calls_log = os.path.join(os.getcwd(), "log/open_ai_calls.json")
+        calls_log = global_config.LOG_OUTPUT_FILE_PATH
         if isinstance(prompts, StringPromptValue):
             prompts = prompts.text
         elif isinstance(prompts, Dict):

@@ -22,7 +22,7 @@ from langchain_openai.embeddings import OpenAIEmbeddings
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
-
+from lib_resume_builder_AIHawk.config import global_config
 load_dotenv()
 
 
@@ -33,7 +33,7 @@ class LLMLogger:
 
     @staticmethod
     def log_request(prompts, parsed_reply: Dict[str, Dict]):
-        calls_log = os.path.join(os.getcwd(), "log/open_ai_calls.json")
+        calls_log = global_config.LOG_OUTPUT_FILE_PATH
         if isinstance(prompts, StringPromptValue):
             prompts = prompts.text
         elif isinstance(prompts, Dict):

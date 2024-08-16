@@ -4,25 +4,23 @@ from pathlib import Path
 import inquirer
 import requests
 import json
-from lib_resume_builder_AIHawk.config import Config
+from lib_resume_builder_AIHawk.config import global_config
 from lib_resume_builder_AIHawk.utils import HTML_to_PDF
 
 
 class FacadeManager:
     def __init__(self, api_key, style_manager, resume_generator, resume_object, log_path):
-        self.config = Config(
-        STRINGS_MODULE_RESUME_PATH=Path("resume_prompt/strings_feder-cr.py").resolve(),
-        STRINGS_MODULE_RESUME_JOB_DESCRIPTION_PATH=Path("resume_job_description_prompt/strings_feder-cr.py").resolve(),
-        STRINGS_MODULE_NAME="strings_feder_cr",
-        STYLES_DIRECTORY=Path("resume_style").resolve(),
-        OUTPUT_FILE_PATH=Path("temp_resume.html").resolve(),
-        LOG_OUTPUT_FILE_PATH=log_path,
-        API_KEY=api_key
-        )
+        global_config.STRINGS_MODULE_RESUME_PATH=Path("resume_prompt/strings_feder-cr.py").resolve(),
+        global_config.STRINGS_MODULE_RESUME_JOB_DESCRIPTION_PATH=Path("resume_job_description_prompt/strings_feder-cr.py").resolve(),
+        global_config.STRINGS_MODULE_NAME="strings_feder_cr",
+        global_config.STYLES_DIRECTORY=Path("resume_style").resolve(),
+        global_config.OUTPUT_FILE_PATH=Path("temp_resume.html").resolve(),
+        global_config.LOG_OUTPUT_FILE_PATH=log_path,
+        global_config.API_KEY=api_key
         self.style_manager = style_manager
-        self.style_manager.set_styles_directory(self.config.STYLES_DIRECTORY)
+        self.style_manager.set_styles_directory(global_config.STYLES_DIRECTORY)
         self.resume_generator = resume_generator
-        self.resume_generator.set_config(self.config)
+        self.resume_generator.set_config(global_config)
         self.resume_generator.set_resume_object(resume_object)
         self.job_description_url = None
 
@@ -60,7 +58,7 @@ class FacadeManager:
             elif action == 'Create Resume based on Job Description':
                 url_job_description = self.prompt_for_url("Please enter the URL of the job description:")
                 self.resume_generator.create_resume_job_description(style_path, url_job_description)
-            pdf_base64 = base64.b64decode(HTML_to_PDF(self.config.OUTPUT_FILE_PATH))
-            if os.path.exists(self.config.OUTPUT_FILE_PATH):
-                os.remove(self.config.OUTPUT_FILE_PATH)
+            pdf_base64 = base64.b64decode(HTML_to_PDF(global_config.OUTPUT_FILE_PATH))
+            if os.path.exists(global_config.OUTPUT_FILE_PATH):
+                os.remove(global_config.OUTPUT_FILE_PATH)
         return pdf_base64
