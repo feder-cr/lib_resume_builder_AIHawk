@@ -1,12 +1,9 @@
-import json
 import os
-import random
 import time
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium import webdriver
 import time
-import glob
 from webdriver_manager.chrome import ChromeDriverManager
 
 html_template = """

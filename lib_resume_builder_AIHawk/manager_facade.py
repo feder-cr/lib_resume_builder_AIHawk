@@ -3,8 +3,6 @@ import os
 from pathlib import Path
 import tempfile
 import inquirer
-import requests
-import json
 from lib_resume_builder_AIHawk.config import global_config
 from lib_resume_builder_AIHawk.utils import HTML_to_PDF
 

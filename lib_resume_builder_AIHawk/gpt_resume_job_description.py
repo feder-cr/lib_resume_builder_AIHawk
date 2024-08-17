@@ -5,12 +5,6 @@ import textwrap
 import time
 from datetime import datetime
 from typing import Dict, List
-
-
-from dotenv import load_dotenv
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.text_splitter import TokenTextSplitter
-from langchain.vectorstores import FAISS
 from langchain_community.document_loaders import TextLoader
 from langchain_core.messages.ai import AIMessage
 from langchain_core.output_parsers import StrOutputParser
@@ -18,12 +12,14 @@ from langchain_core.prompt_values import StringPromptValue
 from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_openai import ChatOpenAI
-from langchain_openai.chat_models import ChatOpenAI
-from langchain_openai.embeddings import OpenAIEmbeddings
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
+from langchain_text_splitters import TokenTextSplitter
+from langchain_community.embeddings import OpenAIEmbeddings
+from langchain_community.vectorstores import FAISS
 from lib_resume_builder_AIHawk.config import global_config
+from dotenv import load_dotenv
 load_dotenv()
 
 
@@ -121,11 +117,8 @@ class LoggerChatModel:
 
 class LLMResumeJobDescription:
     def __init__(self, openai_api_key, strings):
-        self.llm_cheap = LoggerChatModel(
-            ChatOpenAI(
-                model_name="gpt-4o-mini", openai_api_key=openai_api_key, temperature=0.8
-            )
-        )
+        self.llm_cheap = LoggerChatModel(ChatOpenAI(model_name="gpt-4o-mini", openai_api_key=openai_api_key, temperature=0.8))
+        self.llm_embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
         self.strings = strings
 
     @staticmethod
@@ -155,7 +148,7 @@ class LLMResumeJobDescription:
             os.remove(temp_file_path)
         text_splitter = TokenTextSplitter(chunk_size=500, chunk_overlap=50)
         all_splits = text_splitter.split_documents(document)
-        vectorstore = FAISS.from_documents(documents=all_splits, embedding=OpenAIEmbeddings(openai_api_key=openai_api_key))
+        vectorstore = FAISS.from_documents(documents=all_splits, embedding=self.llm_embeddings)
         prompt = PromptTemplate(
             template="""
             You are an expert job description analyst. Your role is to meticulously analyze and interpret job descriptions. 
