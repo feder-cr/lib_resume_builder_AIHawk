@@ -3,7 +3,6 @@ from string import Template
 from typing import Any
 from lib_resume_builder_AIHawk.gpt_resume import LLMResumer
 from lib_resume_builder_AIHawk.gpt_resume_job_description import LLMResumeJobDescription
-import lib_resume_builder_AIHawk.utils as utils
 from lib_resume_builder_AIHawk.module_loader import load_module
 from lib_resume_builder_AIHawk.config import global_config
 
@@ -16,7 +15,7 @@ class ResumeGenerator:
 
     def _create_resume(self, gpt_answerer: Any, style_path, temp_html_path):
         gpt_answerer.set_resume(self.resume_object)
-        template = Template(utils.html_template)
+        template = Template(global_config.html_template)
         message = template.substitute(markdown=gpt_answerer.generate_html_resume(), style_path=style_path)
         with open(temp_html_path, 'w', encoding='utf-8') as temp_file:
             temp_file.write(message)

@@ -6,29 +6,13 @@ from selenium import webdriver
 import time
 from webdriver_manager.chrome import ChromeDriverManager
 
-html_template = """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resume</title>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600&display=swap" rel="stylesheet" /> 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" /> 
-    <link rel="stylesheet" href="$style_path">
-</head>
-$markdown
-</body>
-</html>
-"""
 def create_driver_selenium():
-    chrome_options = webdriver.ChromeOptions()
+    options = get_chrome_browser_options()  # Usa il metodo corretto per ottenere le opzioni
     service = ChromeService(ChromeDriverManager().install())
-    return webdriver.Chrome(service=service, options=chrome_options)
+    return webdriver.Chrome(service=service, options=options)
 
 def HTML_to_PDF(FilePath):
-    # Validate and prepare file paths
+    # Validazione e preparazione del percorso del file
     if not os.path.isfile(FilePath):
         raise FileNotFoundError(f"The specified file does not exist: {FilePath}")
     FilePath = f"file:///{os.path.abspath(FilePath).replace(os.sep, '/')}"
@@ -60,7 +44,7 @@ def HTML_to_PDF(FilePath):
     finally:
         driver.quit()
 
-def chromeBrowserOptions():
+def get_chrome_browser_options():
     options = webdriver.ChromeOptions()
     options.add_argument('--no-sandbox')
     options.add_argument("--ignore-certificate-errors")
@@ -73,6 +57,8 @@ def chromeBrowserOptions():
     options.add_experimental_option('useAutomationExtension', False)
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
     options.add_argument("--incognito")
+    options.add_argument('--log-level=3')
+    options.add_argument("--silent") 
     return options
 
 def printred(text):

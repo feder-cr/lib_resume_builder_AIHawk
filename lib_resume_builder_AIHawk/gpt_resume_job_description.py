@@ -12,9 +12,6 @@ from langchain_core.prompt_values import StringPromptValue
 from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_openai import ChatOpenAI
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as ChromeService
-from webdriver_manager.chrome import ChromeDriverManager
 from langchain_text_splitters import TokenTextSplitter
 from langchain_community.embeddings import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -130,9 +127,8 @@ class LLMResumeJobDescription:
         self.resume = resume
 
     def set_job_description(self, url_job_description):
-        chrome_options = webdriver.ChromeOptions()
-        service = ChromeService(ChromeDriverManager().install())
-        driver = webdriver.Chrome(service=service, options=chrome_options)
+        from lib_resume_builder_AIHawk.utils import create_driver_selenium
+        driver = create_driver_selenium()
         driver.get(url_job_description)
         time.sleep(3)
         body_element = driver.find_element("tag name", "body")
