@@ -41,6 +41,95 @@ Join our **Telegram community** for:
 
 ## Configuration
 
+
+
+## Usage
+
+Here’s a step-by-step example of how to use `lib_resume_builder_AIHawk` to generate a resume:
+
+1. **Import the Required Classes**
+
+   ```python
+   from lib_resume_builder_AIHawk import Resume, StyleManager, ResumeGenerator, FacadeManager
+   import os
+   import base64
+   from pathlib import Path
+   from lib_resume_builder_AIHawk.utils import validate_secrets
+   ```
+
+2. **Setup and Configuration**
+
+   ```python
+   def main():
+       folder = "log"
+       if not os.path.exists(folder):
+           os.makedirs(folder)
+       
+       log_path = Path(folder).resolve()
+       api_key = validate_secrets(Path("secrets.yaml"))
+       
+       with open("plain_text_resume.yaml", "r") as file:
+           plain_text_resume = file.read()
+           resume_object = Resume(plain_text_resume)
+       
+       style_manager = StyleManager()
+       resume_generator = ResumeGenerator()
+       manager = FacadeManager(api_key, style_manager, resume_generator, resume_object, log_path)
+       
+       if os.path.exists("resume.pdf"):
+           os.remove("resume.pdf")
+       
+       with open("resume.pdf", "xb") as f:
+           f.write(base64.b64decode(manager.pdf_base64()))
+   
+   if __name__ == "__main__":
+       main()
+   ```
+
+## Dependencies
+
+`lib_resume_builder_AIHawk` requires the following Python packages:
+
+- `langchain`
+- `langchain-community`
+- `langchain-core`
+- `langchain-openai`
+- `langchain-text-splitters`
+- `langsmith`
+- `openai`
+- `regex==2024.7.24`
+- `selenium==4.9.1`
+- `webdriver-manager==4.0.2`
+- `inquirer`
+- `faiss-cpu`
+
+
+## Documentation
+
+Here’s a detailed documentation for each module in the `lib_resume_builder_AIHawk` library:
+
+---
+
+## lib_resume_builder_AIHawk Documentation
+
+### Resume
+
+#### Overview
+
+The `Resume` class represents a resume created from plain text. It takes resume details in YAML format and provides methods to interact with and manipulate these details.
+
+#### Class Definition
+
+```python
+class Resume:
+    def __init__(self, plain_text_resume: str):
+        """
+        Initializes the Resume object with plain text resume details.
+        
+        :param plain_text_resume: A string containing resume details in YAML format.
+        """
+```
+
 ### Configuring `plain_text_resume.yaml`
 
 This YAML file contains all the personal and professional details needed for resume generation.
@@ -133,111 +222,6 @@ This YAML file contains all the personal and professional details needed for res
      - [Interest]
    ```
 
-### Configuring `secrets.yaml`
-
-This file contains sensitive information and should not be shared or committed to version control.
-
-```yaml
-openai_api_key: [Your OpenAI API key]
-```
-
-## Usage
-
-Here’s a step-by-step example of how to use `lib_resume_builder_AIHawk` to generate a resume:
-
-1. **Import the Required Classes**
-
-   ```python
-   from lib_resume_builder_AIHawk import Resume, StyleManager, ResumeGenerator, FacadeManager
-   import os
-   import base64
-   from pathlib import Path
-   from lib_resume_builder_AIHawk.utils import validate_secrets
-   ```
-
-2. **Setup and Configuration**
-
-   ```python
-   def main():
-       folder = "log"
-       if not os.path.exists(folder):
-           os.makedirs(folder)
-       
-       log_path = Path(folder).resolve()
-       api_key = validate_secrets(Path("secrets.yaml"))
-       
-       with open("plain_text_resume.yaml", "r") as file:
-           plain_text_resume = file.read()
-           resume_object = Resume(plain_text_resume)
-       
-       style_manager = StyleManager()
-       resume_generator = ResumeGenerator()
-       manager = FacadeManager(api_key, style_manager, resume_generator, resume_object, log_path)
-       
-       if os.path.exists("resume.pdf"):
-           os.remove("resume.pdf")
-       
-       with open("resume.pdf", "xb") as f:
-           f.write(base64.b64decode(manager.pdf_base64()))
-   
-   if __name__ == "__main__":
-       main()
-   ```
-
-## Dependencies
-
-`lib_resume_builder_AIHawk` requires the following Python packages:
-
-- `langchain`
-- `langchain-community`
-- `langchain-core`
-- `langchain-openai`
-- `langchain-text-splitters`
-- `langsmith`
-- `openai`
-- `regex==2024.7.24`
-- `selenium==4.9.1`
-- `webdriver-manager==4.0.2`
-- `inquirer`
-- `faiss-cpu`
-
-
-## Documentation
-
-Here’s a detailed documentation for each module in the `lib_resume_builder_AIHawk` library:
-
----
-
-## lib_resume_builder_AIHawk Documentation
-
-### Resume
-
-#### Overview
-
-The `Resume` class represents a resume created from plain text. It takes resume details in YAML format and provides methods to interact with and manipulate these details.
-
-#### Class Definition
-
-```python
-class Resume:
-    def __init__(self, plain_text_resume: str):
-        """
-        Initializes the Resume object with plain text resume details.
-        
-        :param plain_text_resume: A string containing resume details in YAML format.
-        """
-```
-
-#### Methods
-
-- **`__init__(plain_text_resume: str)`**  
-  Initializes the `Resume` object. Takes the resume details as a string in YAML format.
-
-- **`get_details()`**  
-  Returns the resume details as a Python dictionary.
-
-- **`update_details(new_details: dict)`**  
-  Updates the resume details with the given dictionary.
 
 ### StyleManager
 
