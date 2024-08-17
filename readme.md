@@ -30,7 +30,7 @@ Join our **Telegram community** for:
 
 ## Introduction
 
-`lib_resume_builder_AIHawk` is a Python library designed to simplify the creation of personalized, professional resumes. By integrating with GPT models, this library allows you to generate resumes that are tailored to specific job descriptions and formatted in various styles. It provides a flexible approach to resume building with minimal effort.
+`lib_resume_builder_AIHawk` is a Python lib designed to simplify the creation of personalized, professional resumes. By integrating with GPT models, this library allows you to generate resumes that are tailored to specific job descriptions and formatted in various styles. It provides a flexible approach to resume building with minimal effort.
 
 ## Features
 
