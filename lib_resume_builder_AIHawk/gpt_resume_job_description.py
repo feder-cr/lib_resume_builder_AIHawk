@@ -126,7 +126,7 @@ class LLMResumeJobDescription:
     def set_resume(self, resume):
         self.resume = resume
 
-    def set_job_description(self, url_job_description):
+    def set_job_description_from_url(self, url_job_description):
         from lib_resume_builder_AIHawk.utils import create_driver_selenium
         driver = create_driver_selenium()
         driver.get(url_job_description)
@@ -175,6 +175,12 @@ class LLMResumeJobDescription:
         )
         result = qa_chain.invoke("Provide, full job description")
         self.job_description = result
+
+    def set_job_description_from_text(self, job_description_text):
+        prompt = ChatPromptTemplate.from_template(self.strings.summarize_prompt_template)
+        chain = prompt | self.llm_cheap | StrOutputParser()
+        output = chain.invoke({"text": job_description_text})
+        self.job_description = output
     
     def generate_header(self) -> str:
         header_prompt_template = self._preprocess_template_string(
