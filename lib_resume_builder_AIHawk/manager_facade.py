@@ -80,7 +80,7 @@ class FacadeManager:
             elif self.selected_action == 'Create Resume based on Job Description URL':
                 if self.job_description_url is None:
                     self.job_description_url = self.prompt_for_url("Please enter the URL of the job description:")
-                self.resume_generator.create_resume_job_description(style_path, self.job_description_url, temp_html_path)
+                self.resume_generator.create_resume_job_description_url(style_path, self.job_description_url, temp_html_path)
             elif self.selected_action == 'Create Resume based on Job Description Text':
                 self.resume_generator.create_resume_job_description_text(style_path, self.job_description_text, temp_html_path)
             elif self.selected_action == 'Exit':
