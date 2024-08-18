@@ -39,7 +39,7 @@ class FacadeManager:
         ]
         return inquirer.prompt(questions)['text']
 
-    def pdf_base64(self, job_description_url=None, selection=None, job_description_text=None):
+    def pdf_base64(self, job_description_url=None, job_description_text=None):
         if (job_description_url is not None and job_description_text is not None):
             raise ValueError("Esattamente uno tra 'job_description_url' o 'job_description_text' deve essere fornito.")
         
@@ -55,16 +55,15 @@ class FacadeManager:
 
         with tempfile.NamedTemporaryFile(delete=False, mode='w', suffix='.html', encoding='utf-8') as temp_html_file:
             temp_html_path = temp_html_file.name
-            if selection == 'Create Resume':
+            if job_description_url is None and job_description_text is None:
                 self.resume_generator.create_resume(style_path, temp_html_path)
-            elif selection == 'Create Resume based on Job Description URL':
-                if job_description_url is None:
-                    job_description_url = self.prompt_for_url("Please enter the URL of the job description:")
+            elif job_description_url is not None and job_description_text is None:
+                job_description_url = self.prompt_for_url("Please enter the URL of the job description:")
                 self.resume_generator.create_resume_job_description_url(style_path, job_description_url, temp_html_path)
-            elif selection == 'Create Resume based on Job Description Text':
+            elif job_description_url is None and job_description_text is not None:
                 self.resume_generator.create_resume_job_description_text(style_path, job_description_text, temp_html_path)
-            elif selection == 'Exit':
-                exit()
+            else:
+                return None
         pdf_base64 = HTML_to_PDF(temp_html_path)
         os.remove(temp_html_path)
         return pdf_base64
