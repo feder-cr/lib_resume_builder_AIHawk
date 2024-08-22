@@ -5,6 +5,7 @@ import tempfile
 import inquirer
 from lib_resume_builder_AIHawk.config import global_config
 from lib_resume_builder_AIHawk.utils import HTML_to_PDF
+import webbrowser
 
 class FacadeManager:
     def __init__(self, api_key, style_manager, resume_generator, resume_object, log_path):
@@ -45,10 +46,18 @@ class FacadeManager:
         if not styles:
             print("No styles available")
             return None
-
+        final_style_choice = "Create your resume style in CSS (Visit tutorial)"
         formatted_choices = self.style_manager.format_choices(styles)
+        formatted_choices.append(final_style_choice)
         selected_choice = self.prompt_user(formatted_choices, "Which style would you like to adopt?")
-        self.selected_style = selected_choice.split(' (')[0]
+        if selected_choice == final_style_choice:
+            tutorial_url = "https://github.com/feder-cr/lib_resume_builder_AIHawk/blob/main/how_to_contribute/web_designer.md"
+            print("\nOpening tutorial in your browser...")
+            webbrowser.open(tutorial_url)
+            exit()
+        else:
+            self.selected_style = selected_choice.split(' (')[0]
+
 
     def pdf_base64(self, job_description_url=None, job_description_text=None):
         if (job_description_url is not None and job_description_text is not None):
