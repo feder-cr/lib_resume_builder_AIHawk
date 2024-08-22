@@ -17,10 +17,10 @@ def HTML_to_PDF(FilePath):
         raise FileNotFoundError(f"The specified file does not exist: {FilePath}")
     FilePath = f"file:///{os.path.abspath(FilePath).replace(os.sep, '/')}"
     driver = create_driver_selenium()
+
     try:
         driver.get(FilePath)
-        time.sleep(3)
-        start_time = time.time()
+        time.sleep(2)
         pdf_base64 = driver.execute_cdp_cmd("Page.printToPDF", {
             "printBackground": True,         # Include lo sfondo nella stampa
             "landscape": False,              # Stampa in verticale (False per ritratto)
@@ -36,8 +36,6 @@ def HTML_to_PDF(FilePath):
             "generateTaggedPDF": False,      # Non generare PDF taggato
             "transferMode": "ReturnAsBase64" # Restituire il PDF come stringa base64
         })
-        if time.time() - start_time > 120:
-            raise TimeoutError("PDF generation exceeded the specified timeout limit.")
         return pdf_base64['data']
     except WebDriverException as e:
         raise RuntimeError(f"WebDriver exception occurred: {e}")
@@ -46,19 +44,32 @@ def HTML_to_PDF(FilePath):
 
 def get_chrome_browser_options():
     options = webdriver.ChromeOptions()
-    options.add_argument('--no-sandbox')
-    options.add_argument("--ignore-certificate-errors")
-    options.add_argument("--disable-extensions")
-    options.add_argument('--disable-gpu')
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("window-size=1200x800")
-    options.add_argument("--disable-blink-features")
-    options.add_argument("--disable-blink-features=AutomationControlled")
-    options.add_experimental_option('useAutomationExtension', False)
-    options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    options.add_argument("--incognito")
-    options.add_argument('--log-level=3')
-    options.add_argument("--silent") 
+    options.add_argument("--start-maximized")  # Avvia il browser a schermo intero
+    options.add_argument("--no-sandbox")  # Disabilita la sandboxing per migliorare le prestazioni
+    options.add_argument("--disable-dev-shm-usage")  # Utilizza una directory temporanea per la memoria condivisa
+    options.add_argument("--ignore-certificate-errors")  # Ignora gli errori dei certificati SSL
+    options.add_argument("--disable-extensions")  # Disabilita le estensioni del browser
+    options.add_argument("--disable-gpu")  # Disabilita l'accelerazione GPU
+    options.add_argument("window-size=1200x800")  # Imposta la dimensione della finestra del browser
+    options.add_argument("--disable-background-timer-throttling")  # Disabilita il throttling dei timer in background
+    options.add_argument("--disable-backgrounding-occluded-windows")  # Disabilita la sospensione delle finestre occluse
+    options.add_argument("--disable-translate")  # Disabilita il traduttore automatico
+    options.add_argument("--disable-popup-blocking")  # Disabilita il blocco dei popup
+    #options.add_argument("--disable-features=VizDisplayCompositor")  # Disabilita il compositore di visualizzazione
+    options.add_argument("--no-first-run")  # Disabilita la configurazione iniziale del browser
+    options.add_argument("--no-default-browser-check")  # Disabilita il controllo del browser predefinito
+    options.add_argument("--single-process")  # Esegui Chrome in un solo processo
+    options.add_argument("--disable-logging")  # Disabilita il logging
+    options.add_argument("--disable-autofill")  # Disabilita l'autocompletamento dei moduli
+    #options.add_argument("--disable-software-rasterizer")  # Disabilita la rasterizzazione software
+    options.add_argument("--disable-plugins")  # Disabilita i plugin del browser
+    options.add_argument("--disable-animations")  # Disabilita le animazioni
+    options.add_argument("--disable-cache")  # Disabilita la cache
+    #options.add_argument('--proxy-server=localhost:8081')
+    #options.add_experimental_option("useAutomationExtension", False)  # Disabilita l'estensione di automazione di Chrome
+    options.add_experimental_option("excludeSwitches", ["enable-automation", "enable-logging"])  # Esclude switch della modalità automatica e logging
+
+    options.add_argument("--single-process")  # Esegui Chrome in un solo processo
     return options
 
 def printred(text):
