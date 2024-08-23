@@ -46,7 +46,7 @@ class FacadeManager:
         if not styles:
             print("No styles available")
             return None
-        final_style_choice = "Create your resume style in CSS (Visit tutorial)"
+        final_style_choice = "Create your resume style in CSS"
         formatted_choices = self.style_manager.format_choices(styles)
         formatted_choices.append(final_style_choice)
         selected_choice = self.prompt_user(formatted_choices, "Which style would you like to adopt?")
