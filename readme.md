@@ -14,19 +14,18 @@ Join our **Telegram community** for:
 
 1. [Introduction](#introduction)
 2. [Features](#features)
-3. [Configuration](#configuration)
-4. [Usage](#usage)
-5. [Dependencies](#dependencies)
-6. [Documentation](#documentation)
-8. [Troubleshooting](#troubleshooting)
-9. [How to Contribute](#how-to-contribute)
+3. [Usage](#usage)
+4. [Dependencies](#dependencies)
+5. [Documentation](#documentation)
+6. [Troubleshooting](#troubleshooting)
+7. [How to Contribute](#how-to-contribute)
    - [Web Designers](#web-designers)
    - [Prompt Engineers](#prompt-engineers)
    - [Software Engineers](#software-engineers)
    - [Other Contributions](#other-contributions)
-10. [Credits](#credits)
-11. [License](#license)
-12. [Disclaimer](#disclaimer)
+8. [Credits](#credits)
+9. [License](#license)
+10. [Disclaimer](#disclaimer)
 
 ## Introduction
 
@@ -38,10 +37,6 @@ Join our **Telegram community** for:
 - **Job Description Integration:** Customize resumes based on job description URLs.
 - **Flexible Configuration:** Set up resume details using YAML configuration files.
 - **Interactive CLI:** Easily generate resumes via an interactive command-line interface.
-
-## Configuration
-
-(TODO)
 
 ## Dependencies
 
@@ -110,4 +105,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Disclaimer
 
-`lib_resume_builder_AIHawk` is designed to assist with resume creation. While it aims to be helpful, it may not cover all specific requirements for every job application.
+`lib_resume_builder_AIHawk` is designed to assist with resume creation. While it aims to be helpful, the service may not cover all specific requirements for every job application. We assume no responsibility for the quality or accuracy of the generated resumes.
+
