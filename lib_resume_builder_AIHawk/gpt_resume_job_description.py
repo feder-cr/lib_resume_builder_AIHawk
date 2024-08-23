@@ -17,6 +17,7 @@ from langchain_community.embeddings import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
 from lib_resume_builder_AIHawk.config import global_config
 from dotenv import load_dotenv
+from concurrent.futures import ThreadPoolExecutor, as_completed
 load_dotenv()
 
 
@@ -262,23 +263,60 @@ class LLMResumeJobDescription:
         })
         return output
     
+
     def generate_html_resume(self) -> str:
-        header = self.generate_header()
-        education = self.generate_education_section()
-        work_experience = self.generate_work_experience_section()
-        side_projects = self.generate_side_projects_section()
-        achievements = self.generate_achievements_section()
-        additional_skills = self.generate_additional_skills_section()
+        # Define a list of functions to execute in parallel
+        def header_fn():
+            return self.generate_header()
+
+        def education_fn():
+            return self.generate_education_section()
+
+        def work_experience_fn():
+            return self.generate_work_experience_section()
+
+        def side_projects_fn():
+            return self.generate_side_projects_section()
+
+        def achievements_fn():
+            return self.generate_achievements_section()
+
+        def additional_skills_fn():
+            return self.generate_additional_skills_section()
+
+        # Create a dictionary to map the function names to their respective callables
+        functions = {
+            "header": header_fn,
+            "education": education_fn,
+            "work_experience": work_experience_fn,
+            "side_projects": side_projects_fn,
+            "achievements": achievements_fn,
+            "additional_skills": additional_skills_fn,
+        }
+
+        # Use ThreadPoolExecutor to run the functions in parallel
+        with ThreadPoolExecutor() as executor:
+            future_to_section = {executor.submit(fn): section for section, fn in functions.items()}
+            results = {}
+            for future in as_completed(future_to_section):
+                section = future_to_section[future]
+                try:
+                    results[section] = future.result()
+                except Exception as exc:
+                    print(f'{section} generated an exception: {exc}')
+
+        # Construct the final HTML resume from the results
         full_resume = (
             f"<body>\n"
-            f"  {header}\n"
+            f"  {results['header']}\n"
             f"  <main>\n"
-            f"    {education}\n"
-            f"    {work_experience}\n"
-            f"    {side_projects}\n"
-            f"    {achievements}\n"
-            f"    {additional_skills}\n"
+            f"    {results['education']}\n"
+            f"    {results['work_experience']}\n"
+            f"    {results['side_projects']}\n"
+            f"    {results['achievements']}\n"
+            f"    {results['additional_skills']}\n"
             f"  </main>\n"
             f"</body>"
         )
+
         return full_resume
