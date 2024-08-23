@@ -243,5 +243,3 @@ Create a new CSS file to introduce your unique styling for the resume templates.
 If you have any questions or need help with your contribution, please join our [Telegram community](https://t.me/AIhawkCommunity). We're here to support you with any issues or doubts!
 
 Thank you for contributing to **Resume_Builder_AIHawk**! Your creative designs help improve our resume tool and benefit all users. 🚀
-```
-
