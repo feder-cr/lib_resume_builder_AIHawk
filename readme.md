@@ -23,9 +23,8 @@ Join our **Telegram community** for:
    - [Prompt Engineers](#prompt-engineers)
    - [Software Engineers](#software-engineers)
    - [Other Contributions](#other-contributions)
-8. [Credits](#credits)
-9. [License](#license)
-10. [Disclaimer](#disclaimer)
+8. [License](#license)
+9. [Disclaimer](#disclaimer)
 
 ## Introduction
 
@@ -95,9 +94,6 @@ You can also contribute by:
 - Suggesting new features
 - Improving documentation
 
-## Credits
-
-*(To be added)*
 
 ## License
 
