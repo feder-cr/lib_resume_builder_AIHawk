@@ -24,6 +24,7 @@ setup(
         'inquirer',
         'faiss-cpu',
         'pydantic',
+        'pydantic[email]',
     ],
     classifiers=[
         'Programming Language :: Python :: 3',
