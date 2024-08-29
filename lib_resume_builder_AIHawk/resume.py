@@ -1,6 +1,6 @@
 import yaml
 from pydantic import BaseModel, EmailStr, HttpUrl
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Union
 
 # Definizione dei modelli Pydantic
 class PersonalInformation(BaseModel):
@@ -22,7 +22,7 @@ class EducationDetails(BaseModel):
     gpa: Optional[str]
     graduation_year: Optional[int]
     field_of_study: Optional[str]
-    exam: Optional[List[Dict[str, str]]]
+    exam: Optional[Union[List[Dict[str, str]], Dict[str, str]]]
 
 class ExperienceDetails(BaseModel):
     position: Optional[str]
@@ -82,39 +82,28 @@ class Resume(BaseModel):
     salary_expectations: Optional[SalaryExpectations]
     self_identification: Optional[SelfIdentification]
     legal_authorization: Optional[LegalAuthorization]
+    
+    @staticmethod
+    def normalize_exam_format(exam):
+        if isinstance(exam, dict):
+            return [{k: v} for k, v in exam.items()]
+        return exam
 
+    
     def __init__(self, yaml_str: str):
         try:
             # Parse the YAML string
             data = yaml.safe_load(yaml_str)
+
+            # Normalize the exam format
+            if 'education_details' in data:
+                for ed in data['education_details']:
+                    if 'exam' in ed:
+                        ed['exam'] = self.normalize_exam_format(ed['exam'])
+
             # Create an instance of Resume from the parsed data
             super().__init__(**data)
         except yaml.YAMLError as e:
             raise ValueError("Error parsing YAML file.") from e
         except Exception as e:
             raise Exception(f"Unexpected error while parsing YAML: {e}") from e
-
-
-    def __str__(self):
-        def format_field(name, value):
-            if isinstance(value, list) and len(value) == 0:
-                return f"{name}: None"
-            if isinstance(value, list):
-                if all(isinstance(item, BaseModel) for item in value):
-                    return f"{name}:\n" + "\n".join(f"  - {item}" for item in value)
-                return f"{name}: {', '.join(map(str, value))}"
-            if isinstance(value, BaseModel):
-                return f"{name}:\n{value}"
-            return f"{name}: {value}"
-
-        result = []
-        result.append("Personal Information:\n" + format_field("Personal Information", self.personal_information))
-        result.append("\nEducation Details:\n" + format_field("Education Details", self.education_details))
-        result.append("\nExperience Details:\n" + format_field("Experience Details", self.experience_details))
-        result.append("\nProjects:\n" + format_field("Projects", self.projects))
-        result.append("\nAchievements:\n" + format_field("Achievements", self.achievements))
-        result.append("\nCertifications: " + ", ".join(self.certifications or []))
-        result.append("\nLanguages:\n" + format_field("Languages", self.languages))
-        result.append("\nInterests: " + ", ".join(self.interests or []))
-
-        return "\n".join(result)
