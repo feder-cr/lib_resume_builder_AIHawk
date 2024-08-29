@@ -23,6 +23,7 @@ setup(
         'webdriver-manager==4.0.2',
         'inquirer',
         'faiss-cpu',
+        'pydantic',
     ],
     classifiers=[
         'Programming Language :: Python :: 3',
