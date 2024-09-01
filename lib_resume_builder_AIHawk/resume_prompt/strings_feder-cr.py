@@ -1,7 +1,7 @@
 prompt_header = """
 Act as an HR expert and resume writer specializing in ATS-friendly resumes. Your task is to create a professional and polished header for the resume. The header should:
 
-1. **Contact Information**: Include your full name, city and country, phone number, email address, LinkedIn profile, and GitHub profile.
+1. **Contact Information**: Include your full name, city and country, phone number, email address, LinkedIn profile, and GitHub profile. Exclude any information that is not provided.
 2. **Formatting**: Ensure the contact details are presented clearly and are easy to read.
 
 - **My information:**  
@@ -30,7 +30,7 @@ Act as an HR expert and resume writer specializing in ATS-friendly resumes. Your
   </div>
 </header>
 ```
-The results should be provided in html format, Provide only the html code for the resume, without any explanations or additional text and also without ```html ```
+The results should be provided in html format, include only the provide information and Provide only the html code for the resume, without any explanations or additional text and also without ```html ```
 """
 
 prompt_education = """
