@@ -272,29 +272,40 @@ class LLMResumeJobDescription:
         
         return output
 
-    
-
     def generate_html_resume(self) -> str:
-        # Define a list of functions to execute in parallel
+        # Definisci una lista di funzioni da eseguire in parallelo solo se i dati sono disponibili
         def header_fn():
-            return self.generate_header()
+            if self.resume.personal_information and self.job_description:
+                return self.generate_header()
+            return ""
 
         def education_fn():
-            return self.generate_education_section()
+            if self.resume.education_details and self.job_description:
+                return self.generate_education_section()
+            return ""
 
         def work_experience_fn():
-            return self.generate_work_experience_section()
+            if self.resume.experience_details and self.job_description:
+                return self.generate_work_experience_section()
+            return ""
 
         def side_projects_fn():
-            return self.generate_side_projects_section()
+            if self.resume.projects and self.job_description:
+                return self.generate_side_projects_section()
+            return ""
 
         def achievements_fn():
-            return self.generate_achievements_section()
+            if self.resume.achievements and self.job_description:
+                return self.generate_achievements_section()
+            return ""
 
         def additional_skills_fn():
-            return self.generate_additional_skills_section()
+            if (self.resume.experience_details or self.resume.education_details or
+                self.resume.languages or self.resume.interests) and self.job_description:
+                return self.generate_additional_skills_section()
+            return ""
 
-        # Create a dictionary to map the function names to their respective callables
+        # Crea un dizionario per mappare i nomi delle funzioni ai rispettivi callable
         functions = {
             "header": header_fn,
             "education": education_fn,
@@ -304,29 +315,29 @@ class LLMResumeJobDescription:
             "additional_skills": additional_skills_fn,
         }
 
-        # Use ThreadPoolExecutor to run the functions in parallel
+        # Usa ThreadPoolExecutor per eseguire le funzioni in parallelo
         with ThreadPoolExecutor() as executor:
             future_to_section = {executor.submit(fn): section for section, fn in functions.items()}
             results = {}
             for future in as_completed(future_to_section):
                 section = future_to_section[future]
                 try:
-                    results[section] = future.result()
+                    result = future.result()
+                    if result:  # Aggiungi solo se il risultato non è vuoto
+                        results[section] = result
                 except Exception as exc:
-                    print(f'{section} generated an exception: {exc}')
+                    print(f'{section} ha generato un\'eccezione: {exc}')
 
-        # Construct the final HTML resume from the results
-        full_resume = (
-            f"<body>\n"
-            f"  {results['header']}\n"
-            f"  <main>\n"
-            f"    {results['education']}\n"
-            f"    {results['work_experience']}\n"
-            f"    {results['side_projects']}\n"
-            f"    {results['achievements']}\n"
-            f"    {results['additional_skills']}\n"
-            f"  </main>\n"
-            f"</body>"
-        )
+        # Costruisci il curriculum HTML finale dai risultati
+        full_resume = "<body>\n"
+        full_resume += f"  {results.get('header', '')}\n"
+        full_resume += "  <main>\n"
+        full_resume += f"    {results.get('education', '')}\n"
+        full_resume += f"    {results.get('work_experience', '')}\n"
+        full_resume += f"    {results.get('side_projects', '')}\n"
+        full_resume += f"    {results.get('achievements', '')}\n"
+        full_resume += f"    {results.get('additional_skills', '')}\n"
+        full_resume += "  </main>\n"
+        full_resume += "</body>"
 
         return full_resume
