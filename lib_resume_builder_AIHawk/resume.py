@@ -13,17 +13,17 @@ class PersonalInformation(BaseModel):
     phone_prefix: Optional[str]
     phone: Optional[str]
     email: Optional[EmailStr]
-    github: Optional[HttpUrl]
-    linkedin: Optional[HttpUrl]
+    github: Optional[HttpUrl] = None
+    linkedin: Optional[HttpUrl] = None
 
 
 class EducationDetails(BaseModel):
     degree: Optional[str]
     university: Optional[str]
-    gpa: Optional[str]
+    gpa: Optional[str] = None
     graduation_year: Optional[int]
     field_of_study: Optional[str]
-    exam: Optional[Union[List[Dict[str, str]], Dict[str, str]]]
+    exam: Optional[Union[List[Dict[str, str]], Dict[str, str]]] = None
 
 
 class ExperienceDetails(BaseModel):
@@ -32,14 +32,14 @@ class ExperienceDetails(BaseModel):
     employment_period: Optional[str]
     location: Optional[str]
     industry: Optional[str]
-    key_responsibilities: Optional[List[Dict[str, str]]]
-    skills_acquired: Optional[List[str]]
+    key_responsibilities: Optional[List[Dict[str, str]]] = None
+    skills_acquired: Optional[List[str]] = None
 
 
 class Project(BaseModel):
     name: Optional[str]
     description: Optional[str]
-    link: Optional[HttpUrl]
+    link: Optional[HttpUrl] = None
 
 
 class Achievement(BaseModel):

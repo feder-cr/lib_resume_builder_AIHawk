@@ -117,7 +117,6 @@ class LLMResumer:
 
     @staticmethod
     def _preprocess_template_string(template: str) -> str:
-        # Preprocess a template string to remove unnecessary indentation.
         return textwrap.dedent(template)
 
     def set_resume(self, resume):
