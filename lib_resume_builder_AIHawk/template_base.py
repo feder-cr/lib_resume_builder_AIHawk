@@ -14,10 +14,10 @@ prompt_header_template = """
       <span>[Your Email]</span>
     </p> 
     <p class="fab fa-linkedin">
-      <a href="[Link LinkedIn account]">LinkedIn</a> (if is not None)
+      <a href="[Link LinkedIn account]">LinkedIn</a>
     </p> 
     <p class="fab fa-github">
-      <a href="[Link GitHub account]">GitHub</a>  (if is not None)
+      <a href="[Link GitHub account]">GitHub</a>
     </p> 
   </div>
 </header>
@@ -36,15 +36,15 @@ prompt_education_template = """
           <span class="entry-location">[Location] </span>
       </div>
       <div class="entry-details">
-          <span class="entry-title">[Degree] in [Field of Study] | GPA: [Your GPA]/4.0</span>
+          <span class="entry-title">[Degree] in [Field of Study] | Grade: [Your Grade]</span>
           <span class="entry-year">[Start Year] – [End Year]  </span>
       </div>
-      <ul class="compact-list"> (if exam is not None)
-          <li>[Course Name] → GPA: [Grade]/4.0</li>
-          <li>[Course Name] → GPA: [Grade]/4.0</li>
-          <li>[Course Name] → GPA: [Grade]/4.0</li>
-          <li>[Course Name] → GPA: [Grade]/4.0</li>
-          <li>[Course Name] → GPA: [Grade]/4.0</li>
+      <ul class="compact-list">
+          <li>[Course Name] → Grade: [Grade]</li>
+          <li>[Course Name] → Grade: [Grade]</li>
+          <li>[Course Name] → Grade: [Grade]</li>
+          <li>[Course Name] → Grade: [Grade]</li>
+          <li>[Course Name] → Grade: [Grade]</li>
       </ul>
     </div>
 </section>
@@ -57,25 +57,10 @@ prompt_working_experience_template = """
 ```
 <section id="work-experience">
     <h2>Work Experience</h2>
-    <div class="entry">  (if is not None)
+    <div class="entry">
       <div class="entry-header">
           <span class="entry-name">[Company Name]</span>
-          <span class="entry-location"> — [Location]</span>
-      </div>
-      <div class="entry-details">
-          <span class="entry-title">[Your Job Title]</span>
-          <span class="entry-year">[Start Date] – [End Date] </span>
-      </div>
-      <ul class="compact-list">  (if is not None)
-          <li>[Describe your responsibilities and achievements in this role] </li>
-          <li>[Describe any key projects or technologies you worked with]  </li>
-          <li>[Mention any notable accomplishments or results]</li>
-      </ul>
-    </div>
-    <div class="entry">  (if is not None)
-      <div class="entry-header">
-          <span class="entry-name">[Company Name]</span>
-          <span class="entry-location"> — [Location]</span>
+          <span class="entry-location">[Location]</span>
       </div>
       <div class="entry-details">
           <span class="entry-title">[Your Job Title]</span>
@@ -87,10 +72,25 @@ prompt_working_experience_template = """
           <li>[Mention any notable accomplishments or results]</li>
       </ul>
     </div>
-    <div class="entry">  (if is not None)
+    <div class="entry">
       <div class="entry-header">
           <span class="entry-name">[Company Name]</span>
-          <span class="entry-location"> — [Location]</span>
+          <span class="entry-location">[Location]</span>
+      </div>
+      <div class="entry-details">
+          <span class="entry-title">[Your Job Title]</span>
+          <span class="entry-year">[Start Date] – [End Date] </span>
+      </div>
+      <ul class="compact-list">
+          <li>[Describe your responsibilities and achievements in this role] </li>
+          <li>[Describe any key projects or technologies you worked with]  </li>
+          <li>[Mention any notable accomplishments or results]</li>
+      </ul>
+    </div>
+    <div class="entry">
+      <div class="entry-header">
+          <span class="entry-name">[Company Name]</span>
+          <span class="entry-location">[Location]</span>
       </div>
       <div class="entry-details">
           <span class="entry-title">[Your Job Title]</span>
@@ -131,7 +131,7 @@ prompt_side_projects_template = """
       </ul>
     </div>
     <div class="entry">
-      <div class="entry-header">  (if is not None)
+      <div class="entry-header">
           <span class="entry-name"><i class="fab fa-github"></i> <a href="[Github Repo or Link]">[Project Name]</a></span>
       </div>
       <ul class="compact-list">

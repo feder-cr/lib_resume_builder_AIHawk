@@ -22,7 +22,6 @@ load_dotenv()
 
 
 class LLMLogger:
-    
     def __init__(self, llm: ChatOpenAI):
         self.llm = llm
 
@@ -32,7 +31,6 @@ class LLMLogger:
         if isinstance(prompts, StringPromptValue):
             prompts = prompts.text
         elif isinstance(prompts, Dict):
-            # Convert prompts to a dictionary if they are not in the expected format
             prompts = {
                 f"prompt_{i+1}": prompt.content
                 for i, prompt in enumerate(prompts.messages)
@@ -42,38 +40,27 @@ class LLMLogger:
                 f"prompt_{i+1}": prompt.content
                 for i, prompt in enumerate(prompts.messages)
             }
-
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-        # Extract token usage details from the response
         token_usage = parsed_reply["usage_metadata"]
         output_tokens = token_usage["output_tokens"]
         input_tokens = token_usage["input_tokens"]
         total_tokens = token_usage["total_tokens"]
-
-        # Extract model details from the response
         model_name = parsed_reply["response_metadata"]["model_name"]
         prompt_price_per_token = 0.00000015
         completion_price_per_token = 0.0000006
-
-        # Calculate the total cost of the API call
         total_cost = (input_tokens * prompt_price_per_token) + (
             output_tokens * completion_price_per_token
         )
-
-        # Create a log entry with all relevant information
         log_entry = {
             "model": model_name,
             "time": current_time,
             "prompts": prompts,
-            "replies": parsed_reply["content"],  # Response content
+            "replies": parsed_reply["content"],
             "total_tokens": total_tokens,
             "input_tokens": input_tokens,
             "output_tokens": output_tokens,
             "total_cost": total_cost,
         }
-
-        # Write the log entry to the log file in JSON format
         with open(calls_log, "a", encoding="utf-8") as f:
             json_string = json.dumps(log_entry, ensure_ascii=False, indent=4)
             f.write(json_string + "\n")
@@ -121,7 +108,6 @@ class LLMResumeJobDescription:
 
     @staticmethod
     def _preprocess_template_string(template: str) -> str:
-        # Preprocess a template string to remove unnecessary indentation.
         return textwrap.dedent(template)
 
     def set_resume(self, resume):
@@ -205,6 +191,7 @@ class LLMResumeJobDescription:
             "education_details": self.resume.education_details,
             "job_description": self.job_description
         })
+        print(self.resume.education_details)
         return output
 
     def generate_work_experience_section(self) -> str:
@@ -250,14 +237,11 @@ class LLMResumeJobDescription:
         additional_skills_prompt_template = self._preprocess_template_string(
             self.strings.prompt_additional_skills
         )
-        
         skills = set()
-
         if self.resume.experience_details:
             for exp in self.resume.experience_details:
                 if exp.skills_acquired:
                     skills.update(exp.skills_acquired)
-
         if self.resume.education_details:
             for edu in self.resume.education_details:
                 if edu.exam:
@@ -271,11 +255,9 @@ class LLMResumeJobDescription:
             "skills": skills,
             "job_description": self.job_description
         })
-        
         return output
 
     def generate_html_resume(self) -> str:
-        # Definisci una lista di funzioni da eseguire in parallelo solo se i dati sono disponibili
         def header_fn():
             if self.resume.personal_information and self.job_description:
                 return self.generate_header()
@@ -307,7 +289,6 @@ class LLMResumeJobDescription:
                 return self.generate_additional_skills_section()
             return ""
 
-        # Crea un dizionario per mappare i nomi delle funzioni ai rispettivi callable
         functions = {
             "header": header_fn,
             "education": education_fn,
@@ -316,8 +297,6 @@ class LLMResumeJobDescription:
             "achievements": achievements_fn,
             "additional_skills": additional_skills_fn,
         }
-
-        # Usa ThreadPoolExecutor per eseguire le funzioni in parallelo
         with ThreadPoolExecutor() as executor:
             future_to_section = {executor.submit(fn): section for section, fn in functions.items()}
             results = {}
@@ -325,12 +304,10 @@ class LLMResumeJobDescription:
                 section = future_to_section[future]
                 try:
                     result = future.result()
-                    if result:  # Aggiungi solo se il risultato non è vuoto
+                    if result:
                         results[section] = result
                 except Exception as exc:
                     print(f'{section} ha generato un\'eccezione: {exc}')
-
-        # Costruisci il curriculum HTML finale dai risultati
         full_resume = "<body>\n"
         full_resume += f"  {results.get('header', '')}\n"
         full_resume += "  <main>\n"
@@ -341,5 +318,4 @@ class LLMResumeJobDescription:
         full_resume += f"    {results.get('additional_skills', '')}\n"
         full_resume += "  </main>\n"
         full_resume += "</body>"
-
         return full_resume

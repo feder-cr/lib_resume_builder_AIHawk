@@ -9,11 +9,11 @@ from langchain_core.prompt_values import StringPromptValue
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from lib_resume_builder_AIHawk.config import global_config
+from concurrent.futures import ThreadPoolExecutor, as_completed
 load_dotenv()
 
 
 class LLMLogger:
-    
     def __init__(self, llm: ChatOpenAI):
         self.llm = llm
 
@@ -32,62 +32,47 @@ class LLMLogger:
                 f"prompt_{i+1}": prompt.content
                 for i, prompt in enumerate(prompts.messages)
             }
-
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-        # Extract token usage details from the response
         token_usage = parsed_reply["usage_metadata"]
         output_tokens = token_usage["output_tokens"]
         input_tokens = token_usage["input_tokens"]
         total_tokens = token_usage["total_tokens"]
-
-        # Extract model details from the response
         model_name = parsed_reply["response_metadata"]["model_name"]
         prompt_price_per_token = 0.00000015
         completion_price_per_token = 0.0000006
-
-        # Calculate the total cost of the API call
         total_cost = (input_tokens * prompt_price_per_token) + (
             output_tokens * completion_price_per_token
         )
-
-        # Create a log entry with all relevant information
         log_entry = {
             "model": model_name,
             "time": current_time,
             "prompts": prompts,
-            "replies": parsed_reply["content"],  # Response content
+            "replies": parsed_reply["content"],
             "total_tokens": total_tokens,
             "input_tokens": input_tokens,
             "output_tokens": output_tokens,
             "total_cost": total_cost,
         }
-
-        # Write the log entry to the log file in JSON format
         with open(calls_log, "a", encoding="utf-8") as f:
             json_string = json.dumps(log_entry, ensure_ascii=False, indent=4)
             f.write(json_string + "\n")
 
 
 class LoggerChatModel:
-
     def __init__(self, llm: ChatOpenAI):
         self.llm = llm
 
     def __call__(self, messages: List[Dict[str, str]]) -> str:
-        # Call the LLM with the provided messages and log the response.
         reply = self.llm(messages)
         parsed_reply = self.parse_llmresult(reply)
         LLMLogger.log_request(prompts=messages, parsed_reply=parsed_reply)
         return reply
 
     def parse_llmresult(self, llmresult: AIMessage) -> Dict[str, Dict]:
-        # Parse the LLM result into a structured format.
         content = llmresult.content
         response_metadata = llmresult.response_metadata
         id_ = llmresult.id
         usage_metadata = llmresult.usage_metadata
-
         parsed_result = {
             "content": content,
             "response_metadata": {
@@ -198,7 +183,6 @@ class LLMResumer:
         return output
 
     def generate_html_resume(self) -> str:
-        # Definisci una lista di funzioni da eseguire in parallelo solo se i dati sono disponibili
         def header_fn():
             if self.resume.personal_information and self.job_description:
                 return self.generate_header()
@@ -229,8 +213,7 @@ class LLMResumer:
                 self.resume.languages or self.resume.interests) and self.job_description:
                 return self.generate_additional_skills_section()
             return ""
-
-        # Crea un dizionario per mappare i nomi delle funzioni ai rispettivi callable
+        
         functions = {
             "header": header_fn,
             "education": education_fn,
@@ -239,8 +222,6 @@ class LLMResumer:
             "achievements": achievements_fn,
             "additional_skills": additional_skills_fn,
         }
-
-        # Usa ThreadPoolExecutor per eseguire le funzioni in parallelo
         with ThreadPoolExecutor() as executor:
             future_to_section = {executor.submit(fn): section for section, fn in functions.items()}
             results = {}
@@ -248,12 +229,10 @@ class LLMResumer:
                 section = future_to_section[future]
                 try:
                     result = future.result()
-                    if result:  # Aggiungi solo se il risultato non è vuoto
+                    if result:
                         results[section] = result
                 except Exception as exc:
                     print(f'{section} ha generato un\'eccezione: {exc}')
-
-        # Costruisci il curriculum HTML finale dai risultati
         full_resume = "<body>\n"
         full_resume += f"  {results.get('header', '')}\n"
         full_resume += "  <main>\n"
@@ -264,5 +243,4 @@ class LLMResumer:
         full_resume += f"    {results.get('additional_skills', '')}\n"
         full_resume += "  </main>\n"
         full_resume += "</body>"
-
         return full_resume

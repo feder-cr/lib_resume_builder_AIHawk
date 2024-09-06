@@ -7,6 +7,9 @@ Act as an HR expert and resume writer specializing in ATS-friendly resumes. Your
 1. **Contact Information**: Include your full name, city and country, phone number, email address, LinkedIn profile, and GitHub profile.
 2. **Formatting**: Ensure the contact details are presented clearly and are easy to read.
 
+To implement this:
+- If any of the contact information fields (e.g., LinkedIn profile, GitHub profile) are not provided (i.e., `None`), omit them from the header.
+
 - **My information:**  
   {personal_information}
 """ + prompt_header_template
@@ -16,10 +19,13 @@ Act as an HR expert and resume writer with a specialization in creating ATS-frie
 
 1. **Institution Name and Location**: Specify the university or educational institution’s name and location.
 2. **Degree and Field of Study**: Clearly indicate the degree earned and the field of study.
-3. **GPA**: Include your GPA if it is strong and relevant.
-4. **Relevant Coursework**: List key courses with their grades to showcase your academic strengths.
+3. **Grade**: Include your Grade if it is strong and relevant.
+4. **Relevant Coursework**: List key courses with their grades to showcase your academic strengths. If no coursework is provided, omit this section from the template.
 
-Ensure the information is clearly presented and emphasizes academic achievements that align with the job description.
+To implement this, follow these steps:
+- If the exam details are not provided (i.e., `None`), skip the coursework section when filling out the template.
+- If the exam details are available, fill out the coursework section accordingly.
+
 
 - **My information:**  
   {education_details}
@@ -39,6 +45,10 @@ Act as an HR expert and resume writer with a specialization in creating ATS-frie
 
 Ensure that the descriptions highlight relevant experience and align with the job description.
 
+To implement this:
+- If any of the work experience details (e.g., responsibilities, achievements) are not provided (i.e., `None`), omit those sections when filling out the template.
+
+
 - **My information:**  
   {experience_details}
 
@@ -56,6 +66,10 @@ Act as an HR expert and resume writer with a specialization in creating ATS-frie
 
 Ensure that the project descriptions demonstrate your skills and achievements relevant to the job description.
 
+To implement this:
+- If any of the project details (e.g., link, achievements) are not provided (i.e., `None`), omit those sections when filling out the template.
+
+
 - **My information:**  
   {projects}
 
@@ -71,6 +85,10 @@ Act as an HR expert and resume writer with a specialization in creating ATS-frie
 2. **Description**: Provide a brief description of the achievement and its relevance to your career or academic journey.
 
 Ensure that the achievements are clearly presented and effectively highlight your accomplishments.
+
+To implement this:
+- If any of the achievement details (e.g., certifications, descriptions) are not provided (i.e., `None`), omit those sections when filling out the template.
+
 
 - **My information:**  
   {achievements}
@@ -88,6 +106,10 @@ Act as an HR expert and resume writer with a specialization in creating ATS-frie
 3. **Proficiency and Experience**: Briefly describe your experience and proficiency level.
 
 Ensure that the skills listed are relevant and accurately reflect your expertise in the field.
+
+To implement this:
+- If any of the skill details (e.g., languages, interests, skills) are not provided (i.e., `None`), omit those sections when filling out the template.
+
 
 - **My information:**  
   {languages}
@@ -125,6 +147,3 @@ This comprehensive overview will serve as a guideline for the recruitment proces
 ---
 
 # Job Description Summary"""
-
-
-
