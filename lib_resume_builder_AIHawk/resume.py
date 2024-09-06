@@ -18,11 +18,12 @@ class PersonalInformation(BaseModel):
 
 
 class EducationDetails(BaseModel):
-    degree: Optional[str]
-    university: Optional[str]
-    gpa: Optional[str] = None
-    graduation_year: Optional[int]
+    education_level: Optional[str] 
+    institution: Optional[str] 
     field_of_study: Optional[str]
+    final_evaluation_grade: Optional[str]
+    start_date: Optional[str]
+    year_of_completion: Optional[int]
     exam: Optional[Union[List[Dict[str, str]], Dict[str, str]]] = None
 
 
