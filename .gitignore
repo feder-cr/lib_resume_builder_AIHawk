@@ -7,3 +7,4 @@ my*
 plain_text_resume.yaml
 lib_resume_builder_AIHawk.egg-info/*
 build/*
+resume.pdf
