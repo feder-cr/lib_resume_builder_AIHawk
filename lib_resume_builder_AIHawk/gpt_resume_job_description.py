@@ -115,7 +115,7 @@ class LoggerChatModel:
 
 class LLMResumeJobDescription:
     def __init__(self, openai_api_key, strings):
-        self.llm_cheap = LoggerChatModel(ChatOpenAI(model_name="gpt-4o-mini", openai_api_key=openai_api_key, temperature=0.8))
+        self.llm_cheap = LoggerChatModel(ChatOpenAI(model_name="gpt-4o-mini", openai_api_key=openai_api_key, temperature=0.2))
         self.llm_embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
         self.strings = strings
 
@@ -235,14 +235,16 @@ class LLMResumeJobDescription:
         achievements_prompt_template = self._preprocess_template_string(
             self.strings.prompt_achievements
         )
-        prompt = ChatPromptTemplate.from_template(achievements_prompt_template)
-        chain = prompt | self.llm_cheap | StrOutputParser()
-        output = chain.invoke({
-            "achievements": self.resume.achievements,
-            "certifications": self.resume.achievements,
-            "job_description": self.job_description
-        })
-        return output
+
+        if self.resume.achievements: 
+            prompt = ChatPromptTemplate.from_template(achievements_prompt_template)
+            chain = prompt | self.llm_cheap | StrOutputParser()
+            output = chain.invoke({
+                "achievements": self.resume.achievements,
+                "certifications": self.resume.achievements,
+                "job_description": self.job_description
+            })
+            return output
 
     def generate_additional_skills_section(self) -> str:
         additional_skills_prompt_template = self._preprocess_template_string(
