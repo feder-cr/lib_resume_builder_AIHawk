@@ -1,0 +1,63 @@
+personal_information:
+  name: John
+  surname: Doe
+  date_of_birth: "1990-01-01"
+  country: USA
+  city: New York
+  address: 123 Main St
+  phone_prefix: "+1"
+  phone: "123-456-7890"
+  email: john.doe@example.com
+  linkedin: https://linkedin.com/in/johndoe
+  github: https://github.com/johndoe
+education_details:
+  - degree: B.Sc
+    university: NYU
+    gpa: "3.8"
+    graduation_year: 2012
+    field_of_study: Computer Science
+    exam: []
+experience_details:
+  - position: Software Engineer
+    company: XYZ Corp
+    employment_period: 2012-2015
+    location: New York, USA
+    industry: IT
+    key_responsibilities:
+      - task: Developed web applications
+    skills_acquired:
+      - Python
+      - JavaScript
+projects:
+  - name: Project A
+    description: A web application
+    link: https://github.com/johndoe/project-a
+achievements:
+  - name: Award A
+    description: Best Employee of the Year
+certifications:
+  - Certified Python Developer
+languages:
+  - language: English
+    proficiency: Fluent
+interests:
+  - Programming
+availability:
+  notice_period: "1 month"
+salary_expectations:
+  salary_range_usd: "100,000-120,000"
+self_identification:
+  gender: Male
+  pronouns: He/Him
+  veteran: "No"
+  disability: "No"
+  ethnicity: Caucasian
+legal_authorization:
+  eu_work_authorization: "No"
+  us_work_authorization: "Yes"
+  requires_us_visa: "No"
+  requires_us_sponsorship: "No"
+  requires_eu_visa: "No"
+  legally_allowed_to_work_in_eu: "No"
+  legally_allowed_to_work_in_us: "Yes"
+  requires_eu_sponsorship: "No"

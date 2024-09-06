@@ -23,7 +23,6 @@ class LLMLogger:
         if isinstance(prompts, StringPromptValue):
             prompts = prompts.text
         elif isinstance(prompts, Dict):
-            # Convert prompts to a dictionary if they are not in the expected format
             prompts = {
                 f"prompt_{i+1}": prompt.content
                 for i, prompt in enumerate(prompts.messages)
@@ -118,7 +117,6 @@ class LLMResumer:
 
     @staticmethod
     def _preprocess_template_string(template: str) -> str:
-        # Preprocess a template string to remove unnecessary indentation.
         return textwrap.dedent(template)
 
     def set_resume(self, resume):
@@ -198,28 +196,73 @@ class LLMResumer:
             "skills": skills
         })
         return output
-    
-    def generate_html_resume(self) -> str:
-        # Generate all sections of the resume
-        header = self.generate_header()
-        education = self.generate_education_section()
-        work_experience = self.generate_work_experience_section()
-        side_projects = self.generate_side_projects_section()
-        achievements = self.generate_achievements_section()
-        additional_skills = self.generate_additional_skills_section()
 
-        # Combine all sections into a single resume
-        full_resume = (
-            f"<body>\n"
-            f"  {header}\n"
-            f"  <main>\n"
-            f"    {education}\n"
-            f"    {work_experience}\n"
-            f"    {side_projects}\n"
-            f"    {achievements}\n"
-            f"    {additional_skills}\n"
-            f"  </main>\n"
-            f"</body>"
-        )
+    def generate_html_resume(self) -> str:
+        # Definisci una lista di funzioni da eseguire in parallelo solo se i dati sono disponibili
+        def header_fn():
+            if self.resume.personal_information and self.job_description:
+                return self.generate_header()
+            return ""
+
+        def education_fn():
+            if self.resume.education_details and self.job_description:
+                return self.generate_education_section()
+            return ""
+
+        def work_experience_fn():
+            if self.resume.experience_details and self.job_description:
+                return self.generate_work_experience_section()
+            return ""
+
+        def side_projects_fn():
+            if self.resume.projects and self.job_description:
+                return self.generate_side_projects_section()
+            return ""
+
+        def achievements_fn():
+            if self.resume.achievements and self.job_description:
+                return self.generate_achievements_section()
+            return ""
+
+        def additional_skills_fn():
+            if (self.resume.experience_details or self.resume.education_details or
+                self.resume.languages or self.resume.interests) and self.job_description:
+                return self.generate_additional_skills_section()
+            return ""
+
+        # Crea un dizionario per mappare i nomi delle funzioni ai rispettivi callable
+        functions = {
+            "header": header_fn,
+            "education": education_fn,
+            "work_experience": work_experience_fn,
+            "side_projects": side_projects_fn,
+            "achievements": achievements_fn,
+            "additional_skills": additional_skills_fn,
+        }
+
+        # Usa ThreadPoolExecutor per eseguire le funzioni in parallelo
+        with ThreadPoolExecutor() as executor:
+            future_to_section = {executor.submit(fn): section for section, fn in functions.items()}
+            results = {}
+            for future in as_completed(future_to_section):
+                section = future_to_section[future]
+                try:
+                    result = future.result()
+                    if result:  # Aggiungi solo se il risultato non è vuoto
+                        results[section] = result
+                except Exception as exc:
+                    print(f'{section} ha generato un\'eccezione: {exc}')
+
+        # Costruisci il curriculum HTML finale dai risultati
+        full_resume = "<body>\n"
+        full_resume += f"  {results.get('header', '')}\n"
+        full_resume += "  <main>\n"
+        full_resume += f"    {results.get('education', '')}\n"
+        full_resume += f"    {results.get('work_experience', '')}\n"
+        full_resume += f"    {results.get('side_projects', '')}\n"
+        full_resume += f"    {results.get('achievements', '')}\n"
+        full_resume += f"    {results.get('additional_skills', '')}\n"
+        full_resume += "  </main>\n"
+        full_resume += "</body>"
 
         return full_resume
