@@ -47,9 +47,7 @@ class FacadeManager:
             print("No styles available")
             return None
 
-        # Устанавливаем стиль по умолчанию без выбора
-        self.selected_style = "Default"
-        print(f"Selected style: {self.selected_style}")
+
 
     def pdf_base64(self, job_description_url=None, job_description_text=None):
         if (job_description_url is not None and job_description_text is not None):
