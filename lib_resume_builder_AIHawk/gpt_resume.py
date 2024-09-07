@@ -170,34 +170,30 @@ class LLMResumer:
         return output
 
     def generate_achievements_section(self) -> str:
-        logging.debug("Начало генерации секции достижений")
-
+        logging.debug("Starting achievements section generation")
 
         achievements_prompt_template = self._preprocess_template_string(
             self.strings.prompt_achievements
         )
-        logging.debug(f"Шаблон достижений: {achievements_prompt_template}")
-
+        logging.debug(f"Achievements template: {achievements_prompt_template}")
 
         prompt = ChatPromptTemplate.from_template(achievements_prompt_template)
-        logging.debug(f"Промпт: {prompt}")
-
+        logging.debug(f"Prompt: {prompt}")
 
         chain = prompt | self.llm_cheap | StrOutputParser()
-        logging.debug(f"Цепочка создана: {chain}")
-
+        logging.debug(f"Chain created: {chain}")
 
         input_data = {
             "achievements": self.resume.achievements,
             "certifications": self.resume.certifications,
             "job_description": self.job_description
         }
-        logging.debug(f"Входные данные для цепочки: {input_data}")
+        logging.debug(f"Input data for the chain: {input_data}")
 
         output = chain.invoke(input_data)
-        logging.debug(f"Результат вызова цепочки: {output}")
+        logging.debug(f"Chain invocation result: {output}")
 
-        logging.debug("Завершение генерации секции достижений")
+        logging.debug("Achievements section generation completed")
         return output
 
 
