@@ -172,21 +172,21 @@ class LLMResumer:
     def generate_achievements_section(self) -> str:
         logging.debug("Начало генерации секции достижений")
 
-        # Препроцессинг шаблона
+
         achievements_prompt_template = self._preprocess_template_string(
             self.strings.prompt_achievements
         )
         logging.debug(f"Шаблон достижений: {achievements_prompt_template}")
 
-        # Создание промпта
+
         prompt = ChatPromptTemplate.from_template(achievements_prompt_template)
         logging.debug(f"Промпт: {prompt}")
 
-        # Создание цепочки
+
         chain = prompt | self.llm_cheap | StrOutputParser()
         logging.debug(f"Цепочка создана: {chain}")
 
-        # Вызов цепочки с входными данными
+
         input_data = {
             "achievements": self.resume.achievements,
             "certifications": self.resume.certifications,

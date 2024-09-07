@@ -4,7 +4,7 @@ import yaml
 from pydantic import BaseModel, EmailStr, HttpUrl
 
 
-# Классы из первого файла (сохраняем структуру первого файла)
+
 class PersonalInformation(BaseModel):
     name: Optional[str]
     surname: Optional[str]
@@ -115,7 +115,7 @@ class Resume(BaseModel):
         except Exception as e:
             raise Exception(f"Unexpected error while parsing YAML: {e}") from e
 
-    # Функции из второго файла для обработки данных
+
     def _process_personal_information(self, data: Dict[str, Any]) -> PersonalInformation:
         try:
             return PersonalInformation(**data)
@@ -180,7 +180,7 @@ class Resume(BaseModel):
                 raise Exception(f"Unexpected error in Experience processing: {e}") from e
         return experience_list
 
-# Функции и классы для обработки других элементов
+
 @dataclass
 class Exam:
     name: str

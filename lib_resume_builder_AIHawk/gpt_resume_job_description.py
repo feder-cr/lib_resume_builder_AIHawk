@@ -93,12 +93,12 @@ class LoggerChatModel:
         self.llm = llm
 
     def __call__(self, messages: List[Dict[str, str]]) -> str:
-        max_retries = 15  # Максимальное количество попыток
-        retry_delay = 10  # Начальное время ожидания в секундах
+        max_retries = 15
+        retry_delay = 10
 
         for attempt in range(max_retries):
             try:
-                # Попытка вызвать модель
+
                 reply = self.llm(messages)
                 parsed_reply = self.parse_llmresult(reply)
                 LLMLogger.log_request(prompts=messages, parsed_reply=parsed_reply)
@@ -107,7 +107,7 @@ class LoggerChatModel:
                 if isinstance(err, HTTPStatusError) and err.response.status_code == 429:
                     self.logger.warning(f"HTTP 429 Too Many Requests: Waiting for {retry_delay} seconds before retrying (Attempt {attempt + 1}/{max_retries})...")
                     time.sleep(retry_delay)
-                    retry_delay *= 2  # Увеличиваем время ожидания экспоненциально
+                    retry_delay *= 2
                 else:
                     wait_time = self.parse_wait_time_from_error_message(str(err))
                     self.logger.warning(f"Rate limit exceeded or API error. Waiting for {wait_time} seconds before retrying (Attempt {attempt + 1}/{max_retries})...")
@@ -115,7 +115,7 @@ class LoggerChatModel:
             except Exception as e:
                 self.logger.error(f"Unexpected error occurred: {str(e)}, retrying in {retry_delay} seconds... (Attempt {attempt + 1}/{max_retries})")
                 time.sleep(retry_delay)
-                retry_delay *= 2  # Увеличиваем время ожидания экспоненциально
+                retry_delay *= 2
 
         self.logger.critical("Failed to get a response from the model after multiple attempts.")
         raise Exception("Failed to get a response from the model after multiple attempts.")
@@ -282,21 +282,21 @@ class LLMResumeJobDescription:
     def generate_achievements_section(self) -> str:
         logging.debug("Начало генерации секции достижений")
 
-        # Препроцессинг шаблона
+
         achievements_prompt_template = self._preprocess_template_string(
             self.strings.prompt_achievements
         )
         logging.debug(f"Шаблон достижений: {achievements_prompt_template}")
 
-        # Создание промпта
+
         prompt = ChatPromptTemplate.from_template(achievements_prompt_template)
         logging.debug(f"Промпт: {prompt}")
 
-        # Создание цепочки
+
         chain = prompt | self.llm_cheap | StrOutputParser()
         logging.debug(f"Цепочка создана: {chain}")
 
-        # Вызов цепочки с входными данными
+
         input_data = {
             "achievements": self.resume.achievements,
             "certifications": self.resume.certifications,
