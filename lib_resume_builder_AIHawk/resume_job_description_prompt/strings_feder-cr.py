@@ -92,7 +92,6 @@ To implement this:
 
 - **My information:**  
   {achievements}
-  {certifications}
 
 - **Job Description:**  
   {job_description}

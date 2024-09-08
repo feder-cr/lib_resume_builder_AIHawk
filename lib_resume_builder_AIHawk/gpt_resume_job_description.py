@@ -336,9 +336,7 @@ class LLMResumeJobDescription:
         additional_skills_prompt_template = self._preprocess_template_string(
             self.strings.prompt_additional_skills
         )
-        
         skills = set()
-
         if self.resume.experience_details:
             for exp in self.resume.experience_details:
                 if exp.skills_acquired:
@@ -357,12 +355,10 @@ class LLMResumeJobDescription:
             "skills": skills,
             "job_description": self.job_description
         })
-        
         return output
 
 
     def generate_html_resume(self) -> str:
-        # Define a list of functions to execute in parallel
         def header_fn():
             if self.resume.personal_information and self.job_description:
                 return self.generate_header()
