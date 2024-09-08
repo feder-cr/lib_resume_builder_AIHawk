@@ -196,6 +196,33 @@ class LLMResumer:
         logging.debug("Achievements section generation completed")
         return output
 
+    def generate_certifications_section(self) -> str:
+        logging.debug("Starting Certifications section generation")
+
+        certifications_prompt_template = self._preprocess_template_string(
+            self.strings.prompt_certifications
+        )
+        logging.debug(f"Certifications template: {certifications_prompt_template}")
+
+        prompt = ChatPromptTemplate.from_template(certifications_prompt_template)
+        logging.debug(f"Prompt: {prompt}")
+
+        chain = prompt | self.llm_cheap | StrOutputParser()
+        logging.debug(f"Chain created: {chain}")
+
+        input_data = {
+            "certifications": self.resume.certifications,
+            "job_description": self.job_description
+        }
+        logging.debug(f"Input data for the chain: {input_data}")
+
+        output = chain.invoke(input_data)
+        logging.debug(f"Chain invocation result: {output}")
+
+        logging.debug("Certifications section generation completed")
+        return output
+    
+    
 
     def generate_additional_skills_section(self) -> str:
         additional_skills_prompt_template = self._preprocess_template_string(
@@ -214,8 +241,9 @@ class LLMResumer:
             "skills": skills
         })
         return output
-    
+
     def generate_html_resume(self) -> str:
+        # Define a list of functions to execute in parallel
         def header_fn():
             if self.resume.personal_information and self.job_description:
                 return self.generate_header()
@@ -240,6 +268,11 @@ class LLMResumer:
             if self.resume.achievements and self.job_description:
                 return self.generate_achievements_section()
             return ""
+        
+        def certifications_fn():
+            if self.resume.certifications and self.job_description:
+                return self.generate_certifications_section()
+            return ""
 
         def additional_skills_fn():
             if (self.resume.experience_details or self.resume.education_details or
@@ -247,14 +280,18 @@ class LLMResumer:
                 return self.generate_additional_skills_section()
             return ""
 
+        # Create a dictionary to map the function names to their respective callables
         functions = {
             "header": header_fn,
             "education": education_fn,
             "work_experience": work_experience_fn,
             "side_projects": side_projects_fn,
             "achievements": achievements_fn,
+            "certifications": certifications_fn,
             "additional_skills": additional_skills_fn,
         }
+
+        # Use ThreadPoolExecutor to run the functions in parallel
         with ThreadPoolExecutor() as executor:
             future_to_section = {executor.submit(fn): section for section, fn in functions.items()}
             results = {}
@@ -273,6 +310,7 @@ class LLMResumer:
         full_resume += f"    {results.get('work_experience', '')}\n"
         full_resume += f"    {results.get('side_projects', '')}\n"
         full_resume += f"    {results.get('achievements', '')}\n"
+        full_resume += f"    {results.get('certifications', '')}\n"
         full_resume += f"    {results.get('additional_skills', '')}\n"
         full_resume += "  </main>\n"
         full_resume += "</body>"

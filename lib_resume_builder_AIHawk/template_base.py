@@ -155,10 +155,19 @@ prompt_achievements_template = """
       <li><strong>[Award or Recognition or Scholarship or Honor]:</strong> [Describe]</li>
       <li><strong>[Award or Recognition or Scholarship or Honor]:</strong> [Describe]</li>
     </ul>
+</section>
+```
+The results should be provided in html format, Provide only the html code for the resume, without any explanations or additional text and also without ```html ```
+"""
+
+prompt_certifications_template = """
+- **Template to Use**
+```
+<section id="certifications">
     <h2>Certifications</h2>
     <ul class="compact-list">
-      <!-- Dynamically add certifications here -->
-      <li><strong>Certification:</strong> [Certification Name]</li>
+      <li><strong>[Certification Name]:</strong> [Describe]</li>
+      <li><strong>[Certification Name]:</strong> [Describe]</li>
     </ul>
 </section>
 ```

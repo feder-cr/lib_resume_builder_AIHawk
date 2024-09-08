@@ -50,6 +50,11 @@ class Achievement(BaseModel):
     description: Optional[str]
 
 
+class Certifications(BaseModel):
+    name: Optional[str]
+    description: Optional[str]
+
+
 class Language(BaseModel):
     language: Optional[str]
     proficiency: Optional[str]
@@ -88,7 +93,7 @@ class Resume(BaseModel):
     experience_details: Optional[List[ExperienceDetails]] = None
     projects: Optional[List[Project]] = None
     achievements: Optional[List[Achievement]] = None
-    certifications: Optional[List[str]] = None
+    certifications: Optional[List[Certifications]] = None
     languages: Optional[List[Language]] = None
     interests: Optional[List[str]] = None
 

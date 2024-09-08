@@ -295,7 +295,6 @@ class LLMResumeJobDescription:
 
         input_data = {
             "achievements": self.resume.achievements,
-            "certifications": self.resume.certifications,
             "job_description": self.job_description
         }
         logging.debug(f"Input data for the chain: {input_data}")
@@ -306,7 +305,31 @@ class LLMResumeJobDescription:
         logging.debug("Achievements section generation completed")
         return output
 
+    def generate_certifications_section(self) -> str:
+        logging.debug("Starting Certifications section generation")
 
+        certifications_prompt_template = self._preprocess_template_string(
+            self.strings.prompt_certifications
+        )
+        logging.debug(f"Certifications template: {certifications_prompt_template}")
+
+        prompt = ChatPromptTemplate.from_template(certifications_prompt_template)
+        logging.debug(f"Prompt: {prompt}")
+
+        chain = prompt | self.llm_cheap | StrOutputParser()
+        logging.debug(f"Chain created: {chain}")
+
+        input_data = {
+            "certifications": self.resume.certifications,
+            "job_description": self.job_description
+        }
+        logging.debug(f"Input data for the chain: {input_data}")
+
+        output = chain.invoke(input_data)
+        logging.debug(f"Chain invocation result: {output}")
+
+        logging.debug("Certifications section generation completed")
+        return output
 
     def generate_additional_skills_section(self) -> str:
         additional_skills_prompt_template = self._preprocess_template_string(
@@ -363,6 +386,11 @@ class LLMResumeJobDescription:
             if self.resume.achievements and self.job_description:
                 return self.generate_achievements_section()
             return ""
+        
+        def certifications_fn():
+            if self.resume.certifications and self.job_description:
+                return self.generate_certifications_section()
+            return ""
 
         def additional_skills_fn():
             if (self.resume.experience_details or self.resume.education_details or
@@ -377,6 +405,7 @@ class LLMResumeJobDescription:
             "work_experience": work_experience_fn,
             "side_projects": side_projects_fn,
             "achievements": achievements_fn,
+            "certifications": certifications_fn,
             "additional_skills": additional_skills_fn,
         }
 
@@ -399,6 +428,7 @@ class LLMResumeJobDescription:
         full_resume += f"    {results.get('work_experience', '')}\n"
         full_resume += f"    {results.get('side_projects', '')}\n"
         full_resume += f"    {results.get('achievements', '')}\n"
+        full_resume += f"    {results.get('certifications', '')}\n"
         full_resume += f"    {results.get('additional_skills', '')}\n"
         full_resume += "  </main>\n"
         full_resume += "</body>"

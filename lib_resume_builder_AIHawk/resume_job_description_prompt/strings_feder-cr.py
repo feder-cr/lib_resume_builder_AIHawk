@@ -98,6 +98,27 @@ To implement this:
   {job_description}
 """+ prompt_achievements_template
 
+
+prompt_certifications = """
+Act as an HR expert and resume writer with a specialization in creating ATS-friendly resumes. Your task is to list significant certifications based on the provided details. For each certification, ensure you include:
+
+1. Certification Name: Clearly state the name of the certification.
+2. Description: Provide a brief description of the certification and its relevance to your professional or academic career.
+
+Ensure that the certifications are clearly presented and effectively highlight your qualifications.
+
+To implement this:
+
+If any of the certification details (e.g., descriptions) are not provided (i.e., None), omit those sections when filling out the template.
+
+- **My information:**  
+  {certifications}
+
+- **Job Description:**  
+  {job_description}
+"""+ prompt_certifications_template
+
+
 prompt_additional_skills = """
 Act as an HR expert and resume writer with a specialization in creating ATS-friendly resumes. Your task is to list additional skills relevant to the job. For each skill, ensure you include:
 Do not add any information beyond what is listed in the provided data fields. Only use the information provided in the 'languages', 'interests', and 'skills' fields to formulate your responses. Avoid extrapolating or incorporating details from the job description or other external sources.

@@ -10,6 +10,7 @@ Act as an HR expert and resume writer specializing in ATS-friendly resumes. Your
   {personal_information}
 """ + prompt_header_template
 
+
 prompt_education = """
 Act as an HR expert and resume writer with a specialization in creating ATS-friendly resumes. Your task is to articulate the educational background for a resume. For each educational entry, ensure you include:
 
@@ -21,6 +22,7 @@ Act as an HR expert and resume writer with a specialization in creating ATS-frie
 - **My information:**  
   {education_details}
 """+ prompt_education_template
+
 
 prompt_working_experience = """
 Act as an HR expert and resume writer with a specialization in creating ATS-friendly resumes. Your task is to detail the work experience for a resume. For each job entry, ensure you include:
@@ -34,6 +36,7 @@ Act as an HR expert and resume writer with a specialization in creating ATS-frie
   {experience_details}
 """+ prompt_working_experience_template
 
+
 prompt_side_projects = """
 Act as an HR expert and resume writer with a specialization in creating ATS-friendly resumes. Your task is to highlight notable side projects. For each project, ensure you include:
 
@@ -45,6 +48,7 @@ Act as an HR expert and resume writer with a specialization in creating ATS-frie
   {projects}
 """+ prompt_side_projects_template
 
+
 prompt_achievements = """
 Act as an HR expert and resume writer with a specialization in creating ATS-friendly resumes. Your task is to list significant achievements. For each achievement, ensure you include:
 
@@ -53,8 +57,28 @@ Act as an HR expert and resume writer with a specialization in creating ATS-frie
 
 - **My information:**  
   {achievements}
-  {certifications}
 """+ prompt_achievements_template
+
+
+prompt_certifications = """
+Act as an HR expert and resume writer with a specialization in creating ATS-friendly resumes. Your task is to list significant certifications based on the provided details. For each certification, ensure you include:
+
+1. Certification Name: Clearly state the name of the certification.
+2. Description: Provide a brief description of the certification and its relevance to your professional or academic career.
+
+Ensure that the certifications are clearly presented and effectively highlight your qualifications.
+
+To implement this:
+
+If any of the certification details (e.g., descriptions) are not provided (i.e., None), omit those sections when filling out the template.
+
+- **My information:**  
+  {certifications}
+
+- **Job Description:**  
+  {job_description}
+"""+ prompt_certifications_template
+
 
 prompt_additional_skills = """
 Act as an HR expert and resume writer with a specialization in creating ATS-friendly resumes. Your task is to list additional skills relevant to the job. For each skill, ensure you include:
