@@ -1,17 +1,47 @@
 import json
+import os
+import tempfile
 import textwrap
+import time
 from datetime import datetime
 from typing import Dict, List
-from dotenv import load_dotenv
+from langchain_community.document_loaders import TextLoader
 from langchain_core.messages.ai import AIMessage
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompt_values import StringPromptValue
-from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
+from langchain_core.runnables import RunnablePassthrough
 from langchain_openai import ChatOpenAI
+from langchain_text_splitters import TokenTextSplitter
+from langchain_community.embeddings import OpenAIEmbeddings
+from langchain_community.vectorstores import FAISS
 from lib_resume_builder_AIHawk.config import global_config
+from dotenv import load_dotenv
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import logging
+import re  # For regex parsing, especially in `parse_wait_time_from_error_message`
+from requests.exceptions import HTTPError as HTTPStatusError  # Handling HTTP status errors
+import openai
+
 load_dotenv()
 
+log_folder = 'log'
+if not os.path.exists(log_folder):
+    os.makedirs(log_folder)
+
+# Configura il file di log
+log_file = os.path.join(log_folder, 'app.log')
+
+# Configura il logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(log_file, encoding='utf-8')
+    ]
+)
+
+logger = logging.getLogger(__name__)
 
 class LLMLogger:
     
@@ -76,12 +106,35 @@ class LoggerChatModel:
     def __init__(self, llm: ChatOpenAI):
         self.llm = llm
 
+
     def __call__(self, messages: List[Dict[str, str]]) -> str:
-        # Call the LLM with the provided messages and log the response.
-        reply = self.llm(messages)
-        parsed_reply = self.parse_llmresult(reply)
-        LLMLogger.log_request(prompts=messages, parsed_reply=parsed_reply)
-        return reply
+        max_retries = 15
+        retry_delay = 10
+
+        for attempt in range(max_retries):
+            try:
+
+                reply = self.llm(messages)
+                parsed_reply = self.parse_llmresult(reply)
+                LLMLogger.log_request(prompts=messages, parsed_reply=parsed_reply)
+                return reply
+            except (openai.RateLimitError, HTTPStatusError) as err:
+                if isinstance(err, HTTPStatusError) and err.response.status_code == 429:
+                    self.logger.warning(f"HTTP 429 Too Many Requests: Waiting for {retry_delay} seconds before retrying (Attempt {attempt + 1}/{max_retries})...")
+                    time.sleep(retry_delay)
+                    retry_delay *= 2
+                else:
+                    wait_time = self.parse_wait_time_from_error_message(str(err))
+                    self.logger.warning(f"Rate limit exceeded or API error. Waiting for {wait_time} seconds before retrying (Attempt {attempt + 1}/{max_retries})...")
+                    time.sleep(wait_time)
+            except Exception as e:
+                self.logger.error(f"Unexpected error occurred: {str(e)}, retrying in {retry_delay} seconds... (Attempt {attempt + 1}/{max_retries})")
+                time.sleep(retry_delay)
+                retry_delay *= 2
+
+        self.logger.critical("Failed to get a response from the model after multiple attempts.")
+        raise Exception("Failed to get a response from the model after multiple attempts.")
+
 
     def parse_llmresult(self, llmresult: AIMessage) -> Dict[str, Dict]:
         # Parse the LLM result into a structured format.
@@ -112,7 +165,7 @@ class LLMResumer:
     def __init__(self, openai_api_key, strings):
         self.llm_cheap = LoggerChatModel(
             ChatOpenAI(
-                model_name="gpt-4o-mini", openai_api_key=openai_api_key, temperature=0.2
+                model_name="gpt-4o-mini", openai_api_key=openai_api_key, temperature=0.4
             )
         )
         self.strings = strings

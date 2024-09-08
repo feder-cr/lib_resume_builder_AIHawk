@@ -43,7 +43,7 @@ a:hover {
 }
 
 header {
-  order: 1;
+  order: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

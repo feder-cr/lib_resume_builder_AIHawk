@@ -19,12 +19,29 @@ from lib_resume_builder_AIHawk.config import global_config
 from dotenv import load_dotenv
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import logging
-
+import re  # For regex parsing, especially in `parse_wait_time_from_error_message`
+from requests.exceptions import HTTPError as HTTPStatusError  # Handling HTTP status errors
+import openai
 
 
 load_dotenv()
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+log_folder = 'log'
+if not os.path.exists(log_folder):
+    os.makedirs(log_folder)
+
+# Configura il file di log
+log_file = os.path.join(log_folder, 'app.log')
+
+# Configura il logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(log_file, encoding='utf-8')
+    ]
+)
+
 logger = logging.getLogger(__name__)
 
 
@@ -103,7 +120,7 @@ class LoggerChatModel:
                 parsed_reply = self.parse_llmresult(reply)
                 LLMLogger.log_request(prompts=messages, parsed_reply=parsed_reply)
                 return reply
-            except (RateLimitError, HTTPStatusError) as err:
+            except (openai.RateLimitError, HTTPStatusError) as err:
                 if isinstance(err, HTTPStatusError) and err.response.status_code == 429:
                     self.logger.warning(f"HTTP 429 Too Many Requests: Waiting for {retry_delay} seconds before retrying (Attempt {attempt + 1}/{max_retries})...")
                     time.sleep(retry_delay)
@@ -162,7 +179,7 @@ class LoggerChatModel:
 
 class LLMResumeJobDescription:
     def __init__(self, openai_api_key, strings):
-        self.llm_cheap = LoggerChatModel(ChatOpenAI(model_name="gpt-4o-mini", openai_api_key=openai_api_key, temperature=0.2))
+        self.llm_cheap = LoggerChatModel(ChatOpenAI(model_name="gpt-4o-mini", openai_api_key=openai_api_key, temperature=0.4))
         self.llm_embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
         self.strings = strings
 
@@ -252,7 +269,6 @@ class LLMResumeJobDescription:
             "education_details": self.resume.education_details,
             "job_description": self.job_description
         })
-        print(self.resume.education_details)
         return output
 
     def generate_work_experience_section(self) -> str:
@@ -417,7 +433,7 @@ class LLMResumeJobDescription:
                     if result:
                         results[section] = result
                 except Exception as exc:
-                    print(f'{section} ha generato un\'eccezione: {exc}')
+                    logging.debug(f'{section} generated 1 exc: {exc}')
         full_resume = "<body>\n"
         full_resume += f"  {results.get('header', '')}\n"
         full_resume += "  <main>\n"
