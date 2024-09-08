@@ -86,7 +86,6 @@ class LegalAuthorization(BaseModel):
     legally_allowed_to_work_in_us: Optional[str]
     requires_eu_sponsorship: Optional[str]
 
-
 class Resume(BaseModel):
     personal_information: Optional[PersonalInformation]
     education_details: Optional[List[EducationDetails]] = None
@@ -107,7 +106,7 @@ class Resume(BaseModel):
         try:
             # Parse the YAML string
             data = yaml.safe_load(yaml_str)
-
+            
             if 'education_details' in data:
                 for ed in data['education_details']:
                     if 'exam' in ed:
@@ -116,10 +115,9 @@ class Resume(BaseModel):
             # Create an instance of Resume from the parsed data
             super().__init__(**data)
         except yaml.YAMLError as e:
-            raise ValueError("Error parsing YAML file.") from e
+            raise ValueError(f"Error parsing YAML file: {e}") from e
         except Exception as e:
             raise Exception(f"Unexpected error while parsing YAML: {e}") from e
-
 
     def _process_personal_information(self, data: Dict[str, Any]) -> PersonalInformation:
         try:
