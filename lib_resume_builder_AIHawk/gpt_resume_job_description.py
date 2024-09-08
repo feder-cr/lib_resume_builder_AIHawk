@@ -331,19 +331,19 @@ class LLMResumeJobDescription:
         logging.debug("Certifications section generation completed")
         return output
 
+
     def generate_additional_skills_section(self) -> str:
         additional_skills_prompt_template = self._preprocess_template_string(
             self.strings.prompt_additional_skills
         )
+        
         skills = set()
-        for exp in self.resume.experience_details:
-            skills.update(exp.skills_acquired)
-        for edu in self.resume.education_details:
-            skills.update(exam.name for exam in edu.exam)
+
         if self.resume.experience_details:
             for exp in self.resume.experience_details:
                 if exp.skills_acquired:
                     skills.update(exp.skills_acquired)
+
         if self.resume.education_details:
             for edu in self.resume.education_details:
                 if edu.exam:
@@ -359,6 +359,7 @@ class LLMResumeJobDescription:
         })
         
         return output
+
 
     def generate_html_resume(self) -> str:
         # Define a list of functions to execute in parallel
