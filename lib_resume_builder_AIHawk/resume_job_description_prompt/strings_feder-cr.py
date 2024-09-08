@@ -99,7 +99,8 @@ To implement this:
 """+ prompt_achievements_template
 
 prompt_additional_skills = """
-Act as an HR expert and resume writer with a specialization in creating ATS-friendly resumes. Your task is to list additional skills relevant to the job based on the provided job description. For each skill, ensure you include:
+Act as an HR expert and resume writer with a specialization in creating ATS-friendly resumes. Your task is to list additional skills relevant to the job. For each skill, ensure you include:
+Do not add any information beyond what is listed in the provided data fields. Only use the information provided in the 'languages', 'interests', and 'skills' fields to formulate your responses. Avoid extrapolating or incorporating details from the job description or other external sources.
 
 1. **Skill Category**: Clearly state the category or type of skill.
 2. **Specific Skills**: List the specific skills or technologies within each category.
