@@ -14,6 +14,7 @@ load_dotenv()
 
 
 class LLMLogger:
+    
     def __init__(self, llm: ChatOpenAI):
         self.llm = llm
 
@@ -23,6 +24,7 @@ class LLMLogger:
         if isinstance(prompts, StringPromptValue):
             prompts = prompts.text
         elif isinstance(prompts, Dict):
+            # Convert prompts to a dictionary if they are not in the expected format
             prompts = {
                 f"prompt_{i+1}": prompt.content
                 for i, prompt in enumerate(prompts.messages)
@@ -32,47 +34,62 @@ class LLMLogger:
                 f"prompt_{i+1}": prompt.content
                 for i, prompt in enumerate(prompts.messages)
             }
+
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        # Extract token usage details from the response
         token_usage = parsed_reply["usage_metadata"]
         output_tokens = token_usage["output_tokens"]
         input_tokens = token_usage["input_tokens"]
         total_tokens = token_usage["total_tokens"]
+
+        # Extract model details from the response
         model_name = parsed_reply["response_metadata"]["model_name"]
         prompt_price_per_token = 0.00000015
         completion_price_per_token = 0.0000006
+
+        # Calculate the total cost of the API call
         total_cost = (input_tokens * prompt_price_per_token) + (
             output_tokens * completion_price_per_token
         )
+
+        # Create a log entry with all relevant information
         log_entry = {
             "model": model_name,
             "time": current_time,
             "prompts": prompts,
-            "replies": parsed_reply["content"],
+            "replies": parsed_reply["content"],  # Response content
             "total_tokens": total_tokens,
             "input_tokens": input_tokens,
             "output_tokens": output_tokens,
             "total_cost": total_cost,
         }
+
+        # Write the log entry to the log file in JSON format
         with open(calls_log, "a", encoding="utf-8") as f:
             json_string = json.dumps(log_entry, ensure_ascii=False, indent=4)
             f.write(json_string + "\n")
 
 
 class LoggerChatModel:
+
     def __init__(self, llm: ChatOpenAI):
         self.llm = llm
 
     def __call__(self, messages: List[Dict[str, str]]) -> str:
+        # Call the LLM with the provided messages and log the response.
         reply = self.llm(messages)
         parsed_reply = self.parse_llmresult(reply)
         LLMLogger.log_request(prompts=messages, parsed_reply=parsed_reply)
         return reply
 
     def parse_llmresult(self, llmresult: AIMessage) -> Dict[str, Dict]:
+        # Parse the LLM result into a structured format.
         content = llmresult.content
         response_metadata = llmresult.response_metadata
         id_ = llmresult.id
         usage_metadata = llmresult.usage_metadata
+
         parsed_result = {
             "content": content,
             "response_metadata": {
@@ -102,6 +119,7 @@ class LLMResumer:
 
     @staticmethod
     def _preprocess_template_string(template: str) -> str:
+        # Preprocess a template string to remove unnecessary indentation.
         return textwrap.dedent(template)
 
     def set_resume(self, resume):
@@ -152,17 +170,32 @@ class LLMResumer:
         return output
 
     def generate_achievements_section(self) -> str:
+        logging.debug("Starting achievements section generation")
+
         achievements_prompt_template = self._preprocess_template_string(
             self.strings.prompt_achievements
         )
-        if self.resume.achievements:
-            prompt = ChatPromptTemplate.from_template(achievements_prompt_template)
-            chain = prompt | self.llm_cheap | StrOutputParser()
-            output = chain.invoke({
-                "achievements": self.resume.achievements,
-                "certifications": self.resume.achievements
-            })
-            return output
+        logging.debug(f"Achievements template: {achievements_prompt_template}")
+
+        prompt = ChatPromptTemplate.from_template(achievements_prompt_template)
+        logging.debug(f"Prompt: {prompt}")
+
+        chain = prompt | self.llm_cheap | StrOutputParser()
+        logging.debug(f"Chain created: {chain}")
+
+        input_data = {
+            "achievements": self.resume.achievements,
+            "certifications": self.resume.certifications,
+            "job_description": self.job_description
+        }
+        logging.debug(f"Input data for the chain: {input_data}")
+
+        output = chain.invoke(input_data)
+        logging.debug(f"Chain invocation result: {output}")
+
+        logging.debug("Achievements section generation completed")
+        return output
+
 
     def generate_additional_skills_section(self) -> str:
         additional_skills_prompt_template = self._preprocess_template_string(
@@ -181,7 +214,7 @@ class LLMResumer:
             "skills": skills
         })
         return output
-
+    
     def generate_html_resume(self) -> str:
         def header_fn():
             if self.resume.personal_information and self.job_description:
@@ -213,7 +246,7 @@ class LLMResumer:
                 self.resume.languages or self.resume.interests) and self.job_description:
                 return self.generate_additional_skills_section()
             return ""
-        
+
         functions = {
             "header": header_fn,
             "education": education_fn,

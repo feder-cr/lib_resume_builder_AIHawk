@@ -151,12 +151,14 @@ prompt_achievements_template = """
 <section id="achievements">
     <h2>Achievements</h2>
     <ul class="compact-list">
-      <li><strong>[Award or Recognition or Scholarship or Honor]:</strong> [Describe]
-      </li>
-      <li><strong>[Award or Recognition or Scholarship or Honor]:</strong> [Describe]
-      </li>
-      <li><strong>[Award or Recognition or Scholarship or Honor]:</strong> [Describe]
-      </li>
+      <li><strong>[Award or Recognition or Scholarship or Honor]:</strong> [Describe]</li>
+      <li><strong>[Award or Recognition or Scholarship or Honor]:</strong> [Describe]</li>
+      <li><strong>[Award or Recognition or Scholarship or Honor]:</strong> [Describe]</li>
+    </ul>
+    <h2>Certifications</h2>
+    <ul class="compact-list">
+      <!-- Dynamically add certifications here -->
+      <li><strong>Certification:</strong> [Certification Name]</li>
     </ul>
 </section>
 ```
