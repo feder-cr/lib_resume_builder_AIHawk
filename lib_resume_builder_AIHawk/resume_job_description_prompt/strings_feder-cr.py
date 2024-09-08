@@ -1,78 +1,38 @@
+from lib_resume_builder_AIHawk.template_base import *
+
+
 prompt_header = """
 Act as an HR expert and resume writer specializing in ATS-friendly resumes. Your task is to create a professional and polished header for the resume. The header should:
 
 1. **Contact Information**: Include your full name, city and country, phone number, email address, LinkedIn profile, and GitHub profile.
 2. **Formatting**: Ensure the contact details are presented clearly and are easy to read.
 
+To implement this:
+- If any of the contact information fields (e.g., LinkedIn profile, GitHub profile) are not provided (i.e., `None`), omit them from the header.
+
 - **My information:**  
   {personal_information}
-
-- **Template to Use**
-```
-<header>
-  <h1>[Name and Surname]</h1>
-  <div class="contact-info"> 
-    <p class="fas fa-map-marker-alt">
-      <span>[Your City, Your Country]</span>
-    </p> 
-    <p class="fas fa-phone">
-      <span>[Your Prefix Phone number]</span>
-    </p> 
-    <p class="fas fa-envelope">
-      <span>[Your Email]</span>
-    </p> 
-    <p class="fab fa-linkedin">
-      <a href="[Link LinkedIn account]">LinkedIn</a>
-    </p> 
-    <p class="fab fa-github">
-      <a href="[Link GitHub account]">GitHub</a>
-    </p> 
-  </div>
-</header>
-```
-The results should be provided in html format, Provide only the html code for the resume, without any explanations or additional text and also without ```html ```
-"""
+""" + prompt_header_template
 
 prompt_education = """
 Act as an HR expert and resume writer with a specialization in creating ATS-friendly resumes. Your task is to articulate the educational background for a resume, ensuring it aligns with the provided job description. For each educational entry, ensure you include:
 
 1. **Institution Name and Location**: Specify the university or educational institution’s name and location.
 2. **Degree and Field of Study**: Clearly indicate the degree earned and the field of study.
-3. **GPA**: Include your GPA if it is strong and relevant.
-4. **Relevant Coursework**: List key courses with their grades to showcase your academic strengths.
+3. **Grade**: Include your Grade if it is strong and relevant.
+4. **Relevant Coursework**: List key courses with their grades to showcase your academic strengths. If no coursework is provided, omit this section from the template.
 
-Ensure the information is clearly presented and emphasizes academic achievements that align with the job description.
+To implement this, follow these steps:
+- If the exam details are not provided (i.e., `None`), skip the coursework section when filling out the template.
+- If the exam details are available, fill out the coursework section accordingly.
+
 
 - **My information:**  
   {education_details}
 
 - **Job Description:**  
   {job_description}
-
-- **Template to Use**
-```
-<section id="education">
-    <h2>Education</h2>
-    <div class="entry">
-      <div class="entry-header">
-          <span class="entry-name">[University Name]</span>
-          <span class="entry-location">[Location] </span>
-      </div>
-      <div class="entry-details">
-          <span class="entry-title">[Degree] in [Field of Study] | GPA: [Your GPA]/4.0</span>
-          <span class="entry-year">[Start Year] – [End Year]  </span>
-      </div>
-      <ul class="compact-list">
-          <li>[Course Name] → GPA: [Grade]/4.0</li>
-          <li>[Course Name] → GPA: [Grade]/4.0</li>
-          <li>[Course Name] → GPA: [Grade]/4.0</li>
-          <li>[Course Name] → GPA: [Grade]/4.0</li>
-          <li>[Course Name] → GPA: [Grade]/4.0</li>
-      </ul>
-    </div>
-</section>
-```
-The results should be provided in html format, Provide only the html code for the resume, without any explanations or additional text and also without ```html ```"""
+"""+ prompt_education_template
 
 
 prompt_working_experience = """
@@ -85,64 +45,16 @@ Act as an HR expert and resume writer with a specialization in creating ATS-frie
 
 Ensure that the descriptions highlight relevant experience and align with the job description.
 
+To implement this:
+- If any of the work experience details (e.g., responsibilities, achievements) are not provided (i.e., `None`), omit those sections when filling out the template.
+
+
 - **My information:**  
   {experience_details}
 
 - **Job Description:**  
   {job_description}
-
-- **Template to Use**
-```
-<section id="work-experience">
-    <h2>Work Experience</h2>
-    <div class="entry">
-      <div class="entry-header">
-          <span class="entry-name">[Company Name]</span>
-          <span class="entry-location"> — [Location]</span>
-      </div>
-      <div class="entry-details">
-          <span class="entry-title">[Your Job Title]</span>
-          <span class="entry-year">[Start Date] – [End Date] </span>
-      </div>
-      <ul class="compact-list">
-          <li>[Describe your responsibilities and achievements in this role] </li>
-          <li>[Describe any key projects or technologies you worked with]  </li>
-          <li>[Mention any notable accomplishments or results]</li>
-      </ul>
-    </div>
-    <div class="entry">
-      <div class="entry-header">
-          <span class="entry-name">[Company Name]</span>
-          <span class="entry-location"> — [Location]</span>
-      </div>
-      <div class="entry-details">
-          <span class="entry-title">[Your Job Title]</span>
-          <span class="entry-year">[Start Date] – [End Date] </span>
-      </div>
-      <ul class="compact-list">
-          <li>[Describe your responsibilities and achievements in this role] </li>
-          <li>[Describe any key projects or technologies you worked with]  </li>
-          <li>[Mention any notable accomplishments or results]</li>
-      </ul>
-    </div>
-    <div class="entry">
-      <div class="entry-header">
-          <span class="entry-name">[Company Name]</span>
-          <span class="entry-location"> — [Location]</span>
-      </div>
-      <div class="entry-details">
-          <span class="entry-title">[Your Job Title]</span>
-          <span class="entry-year">[Start Date] – [End Date] </span>
-      </div>
-      <ul class="compact-list">
-          <li>[Describe your responsibilities and achievements in this role] </li>
-          <li>[Describe any key projects or technologies you worked with]  </li>
-          <li>[Mention any notable accomplishments or results]</li>
-      </ul>
-    </div>
-</section>
-```
-The results should be provided in html format, Provide only the html code for the resume, without any explanations or additional text and also without ```html ```"""
+"""+ prompt_working_experience_template
 
 
 prompt_side_projects = """
@@ -154,47 +66,16 @@ Act as an HR expert and resume writer with a specialization in creating ATS-frie
 
 Ensure that the project descriptions demonstrate your skills and achievements relevant to the job description.
 
+To implement this:
+- If any of the project details (e.g., link, achievements) are not provided (i.e., `None`), omit those sections when filling out the template.
+
+
 - **My information:**  
   {projects}
 
 - **Job Description:**  
   {job_description}
-
-- **Template to Use**
-```
-<section id="side-projects">
-    <h2>Side Projects</h2>
-    <div class="entry">
-      <div class="entry-header">
-          <span class="entry-name"><i class="fab fa-github"></i> <a href="[Github Repo or Link]">[Project Name]</a></span>
-      </div>
-      <ul class="compact-list">
-          <li>[Describe any notable recognition or reception]</li>
-          <li>[Describe any notable recognition or reception]</li>
-      </ul>
-    </div>
-    <div class="entry">
-      <div class="entry-header">
-          <span class="entry-name"><i class="fab fa-github"></i> <a href="[Github Repo or Link]">[Project Name]</a></span>
-      </div>
-      <ul class="compact-list">
-          <li>[Describe any notable recognition or reception]</li>
-          <li>[Describe any notable recognition or reception]</li>
-      </ul>
-    </div>
-    <div class="entry">
-      <div class="entry-header">
-          <span class="entry-name"><i class="fab fa-github"></i> <a href="[Github Repo or Link]">[Project Name]</a></span>
-      </div>
-      <ul class="compact-list">
-          <li>[Describe any notable recognition or reception]</li>
-          <li>[Describe any notable recognition or reception]</li>
-      </ul>
-    </div>
-</section>
-```
-The results should be provided in html format, Provide only the html code for the resume, without any explanations or additional text and also without ```html ```
-"""
+"""+ prompt_side_projects_template
 
 
 prompt_achievements = """
@@ -205,38 +86,51 @@ Act as an HR expert and resume writer with a specialization in creating ATS-frie
 
 Ensure that the achievements are clearly presented and effectively highlight your accomplishments.
 
+To implement this:
+- If any of the achievement details (e.g., certifications, descriptions) are not provided (i.e., `None`), omit those sections when filling out the template.
+
+
 - **My information:**  
   {achievements}
+
+- **Job Description:**  
+  {job_description}
+"""+ prompt_achievements_template
+
+
+prompt_certifications = """
+Act as an HR expert and resume writer with a specialization in creating ATS-friendly resumes. Your task is to list significant certifications based on the provided details. For each certification, ensure you include:
+
+1. Certification Name: Clearly state the name of the certification.
+2. Description: Provide a brief description of the certification and its relevance to your professional or academic career.
+
+Ensure that the certifications are clearly presented and effectively highlight your qualifications.
+
+To implement this:
+
+If any of the certification details (e.g., descriptions) are not provided (i.e., None), omit those sections when filling out the template.
+
+- **My information:**  
   {certifications}
 
 - **Job Description:**  
   {job_description}
+"""+ prompt_certifications_template
 
-- **Template to Use**
-```
-<section id="achievements">
-    <h2>Achievements</h2>
-    <ul class="compact-list">
-      <li><strong>[Award or Recognition or Scholarship or Honor]:</strong> [Describe]
-      </li>
-      <li><strong>[Award or Recognition or Scholarship or Honor]:</strong> [Describe]
-      </li>
-      <li><strong>[Award or Recognition or Scholarship or Honor]:</strong> [Describe]
-      </li>
-    </ul>
-</section>
-```
-The results should be provided in html format, Provide only the html code for the resume, without any explanations or additional text and also without ```html ```
-"""
 
 prompt_additional_skills = """
-Act as an HR expert and resume writer with a specialization in creating ATS-friendly resumes. Your task is to list additional skills relevant to the job based on the provided job description. For each skill, ensure you include:
+Act as an HR expert and resume writer with a specialization in creating ATS-friendly resumes. Your task is to list additional skills relevant to the job. For each skill, ensure you include:
+Do not add any information beyond what is listed in the provided data fields. Only use the information provided in the 'languages', 'interests', and 'skills' fields to formulate your responses. Avoid extrapolating or incorporating details from the job description or other external sources.
 
 1. **Skill Category**: Clearly state the category or type of skill.
 2. **Specific Skills**: List the specific skills or technologies within each category.
 3. **Proficiency and Experience**: Briefly describe your experience and proficiency level.
 
 Ensure that the skills listed are relevant and accurately reflect your expertise in the field.
+
+To implement this:
+- If any of the skill details (e.g., languages, interests, skills) are not provided (i.e., `None`), omit those sections when filling out the template.
+
 
 - **My information:**  
   {languages}
@@ -245,33 +139,7 @@ Ensure that the skills listed are relevant and accurately reflect your expertise
 
 - **Job Description:**  
   {job_description}
-
-- **Template to Use**
-'''
-<section id="skills-languages">
-    <h2>Additional Skills</h2>
-    <div class="two-column">
-      <ul class="compact-list">
-          <li>[Specific Skill or Technology]</li>
-          <li>[Specific Skill or Technology]</li>
-          <li>[Specific Skill or Technology]</li>
-          <li>[Specific Skill or Technology]</li>
-          <li>[Specific Skill or Technology]</li>
-          <li>[Specific Skill or Technology]</li>
-      </ul>
-      <ul class="compact-list">
-          <li>[Specific Skill or Technology]</li>
-          <li>[Specific Skill or Technology]</li>
-          <li>[Specific Skill or Technology]</li>
-          <li>[Specific Skill or Technology]</li>
-          <li>[Specific Skill or Technology]</li>
-          <li><strong>Languages:</strong> </li>
-      </ul>
-    </div>
-</section>
-'''
-The results should be provided in html format, Provide only the html code for the resume, without any explanations or additional text and also without ```html ```
-"""
+"""+ prompt_additional_skills_template
 
 summarize_prompt_template = """
 As a seasoned HR expert, your task is to identify and outline the key skills and requirements necessary for the position of this job. Use the provided job description as input to extract all relevant information. This will involve conducting a thorough analysis of the job's responsibilities and the industry standards. You should consider both the technical and soft skills needed to excel in this role. Additionally, specify any educational qualifications, certifications, or experiences that are essential. Your analysis should also reflect on the evolving nature of this role, considering future trends and how they might affect the required competencies.
@@ -300,6 +168,3 @@ This comprehensive overview will serve as a guideline for the recruitment proces
 ---
 
 # Job Description Summary"""
-
-
-

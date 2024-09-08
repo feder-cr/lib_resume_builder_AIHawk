@@ -4,7 +4,9 @@ log
 /src/__pycache__
 test*
 my*
-plain_text_resume.yaml
 lib_resume_builder_AIHawk.egg-info/*
 build/*
 resume.pdf
+data_folder
+generated_cv
+plain_text_resume*

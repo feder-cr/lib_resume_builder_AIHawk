@@ -8,7 +8,13 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 def create_driver_selenium():
     options = get_chrome_browser_options()  # Usa il metodo corretto per ottenere le opzioni
-    service = ChromeService(ChromeDriverManager().install())
+
+    chrome_install = ChromeDriverManager().install()
+    folder = os.path.dirname(chrome_install)
+    chromedriver_path = os.path.join(folder, "chromedriver.exe")
+
+
+    service = ChromeService(executable_path=chromedriver_path)
     return webdriver.Chrome(service=service, options=options)
 
 def HTML_to_PDF(FilePath):
@@ -28,8 +34,8 @@ def HTML_to_PDF(FilePath):
             "paperHeight": 11.69,            # Altezza del foglio in pollici (A4)
             "marginTop": 0.8,                # Margine superiore in pollici (circa 2 cm)
             "marginBottom": 0.8,             # Margine inferiore in pollici (circa 2 cm)
-            "marginLeft": 0.8,               # Margine sinistro in pollici (circa 2 cm)
-            "marginRight": 0.8,              # Margine destro in pollici (circa 2 cm)
+            "marginLeft": 0.5,               # Margine sinistro in pollici (circa 2 cm)
+            "marginRight": 0.5,              # Margine destro in pollici (circa 2 cm)
             "displayHeaderFooter": False,   # Non visualizzare intestazioni e piè di pagina
             "preferCSSPageSize": True,       # Preferire le dimensioni della pagina CSS
             "generateDocumentOutline": False, # Non generare un sommario del documento
