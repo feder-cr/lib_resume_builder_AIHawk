@@ -26,6 +26,7 @@ class TestPDFGeneration(unittest.TestCase):
         self.output_path = Path("data_folder/output")
 
         self.plain_text_resume = yaml.dump(self.plain_text_resume, default_flow_style=False)
+        time.sleep(5)
 
         # Initialize components
         self.style_manager = StyleManager()
@@ -46,12 +47,14 @@ class TestPDFGeneration(unittest.TestCase):
         if not calls_log.exists():
             with open(calls_log, "w", encoding="utf-8") as f:
                 json.dump([], f)
+        time.sleep(10)
 
     @patch('lib_resume_builder_AIHawk.manager_facade.os.system')
     def test_pdf_generation(self, mock_os_system):
         # Generate the PDF
         pdf_base64 = self.resume_generator_manager.pdf_base64()
         self.assertIsNotNone(pdf_base64)
+        time.sleep(5)
 
         # Save the PDF to disk
         folder_path = 'generated_cv'
@@ -60,7 +63,7 @@ class TestPDFGeneration(unittest.TestCase):
         with open(file_path_pdf, "wb") as f:
             f.write(base64.b64decode(pdf_base64))
 
-        time.sleep(5)  # Adjust the delay as needed
+        time.sleep(5)
 
 
         # Assert that the file exists and is not empty
