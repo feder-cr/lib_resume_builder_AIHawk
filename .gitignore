@@ -11,3 +11,4 @@ data_folder
 generated_cv
 plain_text_resume*
 secrets.yaml
+/lib_resume_builder_AIHawk/unit-test/yaml_example/secrets.yaml
