@@ -9,4 +9,4 @@ repos:
         pass_filenames: false
         always_run: true
         stages: [commit]
-        timeout: 35
+        timeout: 30

@@ -69,17 +69,11 @@ class TestPDFGeneration(unittest.TestCase):
         with open(file_path_pdf, "wb") as f:
             f.write(base64.b64decode(pdf_base64))
 
-        # # Check the open_ai_calls.json file
-        # calls_log = self.output_path / "open_ai_calls.json"
-        # self.assertTrue(calls_log.exists())
-        # with open(calls_log, "r", encoding="utf-8") as f:
-        #     calls = json.load(f)
-        # logger.info(f"OpenAI calls: {calls}")
-        # self.assertGreater(len(calls), 0)
 
-        # Assert that the file exists and is not empty
-        # self.assertTrue(os.path.exists(file_path_pdf))
-        # self.assertGreater(os.path.getsize(file_path_pdf), 0)
+
+        # Assert that the file exists and is not empty // Final Check
+        self.assertTrue(os.path.exists(file_path_pdf))
+        self.assertGreater(os.path.getsize(file_path_pdf), 0)
 
 if __name__ == '__main__':
     unittest.main()
