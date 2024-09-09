@@ -1,5 +1,6 @@
 import json
 import os
+import time
 import unittest
 from unittest.mock import patch, MagicMock
 from lib_resume_builder_AIHawk import Resume, ResumeGenerator, StyleManager, FacadeManager
@@ -58,6 +59,9 @@ class TestPDFGeneration(unittest.TestCase):
         file_path_pdf = os.path.join(folder_path, "CV_test.pdf")
         with open(file_path_pdf, "wb") as f:
             f.write(base64.b64decode(pdf_base64))
+
+        time.sleep(5)  # Adjust the delay as needed
+
 
         # Assert that the file exists and is not empty
         self.assertTrue(os.path.exists(file_path_pdf))
