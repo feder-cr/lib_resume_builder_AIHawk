@@ -307,38 +307,38 @@ class LLMResumer:
     def generate_html_resume(self) -> str:
         # Define a list of functions to execute in parallel
         def header_fn():
-            if self.resume.personal_information and self.job_description:
+            if self.resume.personal_information:
                 return self.generate_header()
             return ""
 
         def education_fn():
-            if self.resume.education_details and self.job_description:
+            if self.resume.education_details:
                 return self.generate_education_section()
             return ""
 
         def work_experience_fn():
-            if self.resume.experience_details and self.job_description:
+            if self.resume.experience_details :
                 return self.generate_work_experience_section()
             return ""
 
         def side_projects_fn():
-            if self.resume.projects and self.job_description:
+            if self.resume.projects :
                 return self.generate_side_projects_section()
             return ""
 
         def achievements_fn():
-            if self.resume.achievements and self.job_description:
+            if self.resume.achievements :
                 return self.generate_achievements_section()
             return ""
         
         def certifications_fn():
-            if self.resume.certifications and self.job_description:
+            if self.resume.certifications:
                 return self.generate_certifications_section()
             return ""
 
         def additional_skills_fn():
             if (self.resume.experience_details or self.resume.education_details or
-                self.resume.languages or self.resume.interests) and self.job_description:
+                self.resume.languages or self.resume.interests) :
                 return self.generate_additional_skills_section()
             return ""
 
