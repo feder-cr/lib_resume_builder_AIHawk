@@ -1,0 +1,10 @@
+# File: .pre-commit-config.yaml
+repos:
+-   repo: local
+    hooks:
+    -   id: python-unit-test
+        name: Python unit test
+        entry: python -m unittest lib_resume_builder_AIHawk/unit-test/pdf_generation.py
+        language: system
+        pass_filenames: false
+        always_run: true

@@ -10,14 +10,14 @@ import yaml
 class TestPDFGeneration(unittest.TestCase):
 
     def setUp(self):
-        # Load data from YAML files
-        with open('./yaml_example/config.yaml', 'r') as f:
+        base_dir = Path(__file__).resolve().parent
+        with open(base_dir / 'yaml_example/config.yaml', 'r') as f:
             self.config = yaml.safe_load(f)
 
-        with open('./yaml_example/plain_text_resume.yaml', 'r') as f:
+        with open(base_dir / 'yaml_example/plain_text_resume.yaml', 'r') as f:
             self.plain_text_resume = yaml.safe_load(f)
 
-        with open('./yaml_example/secrets.yaml', 'r') as f:
+        with open(base_dir / 'yaml_example/secrets.yaml', 'r') as f:
             self.secrets = yaml.safe_load(f)
 
         # Extract necessary data
@@ -36,7 +36,7 @@ class TestPDFGeneration(unittest.TestCase):
         )
         os.system('cls' if os.name == 'nt' else 'clear')
         # Ensure style is selected
-        self.resume_generator_manager.choose_style()
+        self.resume_generator_manager.choose_style(test_flag=True)
         os.system('cls' if os.name == 'nt' else 'clear')
 
         # Create the necessary directory and file
@@ -64,4 +64,4 @@ class TestPDFGeneration(unittest.TestCase):
         self.assertGreater(os.path.getsize(file_path_pdf), 0)
 
 if __name__ == '__main__':
-    unittest.main() 
+    unittest.main()
