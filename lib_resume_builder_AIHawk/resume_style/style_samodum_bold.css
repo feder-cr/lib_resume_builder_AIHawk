@@ -33,6 +33,13 @@ body {
   margin: 0 auto;
 }
 
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  order: 2;
+}
+
 a {
   text-decoration: none;
 }
@@ -57,6 +64,12 @@ h1 {
   font-weight: 400;
   margin-bottom: -0.125rem;
   color: var(--accentColor);
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
 }
 
 .contact-info p {
@@ -162,17 +175,17 @@ section h2 {
 }
 
 #work-experience {
-  order: 2;
+  order: 1;
 }
 #education {
-  order: 3;
+  order: 2;
 }
 #achievements {
-  order: 4;
+  order: 3;
 }
 #side-projects {
-  order: 5;
+  order: 4;
 }
 #skills-languages {
-  order: 6;
+  order: 5;
 }
