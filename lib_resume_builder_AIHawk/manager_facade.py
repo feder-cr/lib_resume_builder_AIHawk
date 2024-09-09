@@ -41,15 +41,22 @@ class FacadeManager:
         ]
         return inquirer.prompt(questions)['text']
 
-    def choose_style(self):
+    def choose_style(self, test_flag=False):
         styles = self.style_manager.get_styles()
         if not styles:
             print("No styles available")
             return None
+
         final_style_choice = "Create your resume style in CSS"
         formatted_choices = self.style_manager.format_choices(styles)
         formatted_choices.append(final_style_choice)
-        selected_choice = self.prompt_user(formatted_choices, "Which style would you like to adopt?")
+
+        if test_flag:
+            # Automatically select the first available style during tests
+            selected_choice = formatted_choices[0]
+        else:
+            selected_choice = self.prompt_user(formatted_choices, "Which style would you like to adopt?")
+
         if selected_choice == final_style_choice:
             tutorial_url = "https://github.com/feder-cr/lib_resume_builder_AIHawk/blob/main/how_to_contribute/web_designer.md"
             print("\nOpening tutorial in your browser...")
@@ -57,7 +64,6 @@ class FacadeManager:
             exit()
         else:
             self.selected_style = selected_choice.split(' (')[0]
-
 
     def pdf_base64(self, job_description_url=None, job_description_text=None):
         if (job_description_url is not None and job_description_text is not None):
