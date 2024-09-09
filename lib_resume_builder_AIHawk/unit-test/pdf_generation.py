@@ -40,7 +40,6 @@ class TestPDFGeneration(unittest.TestCase):
         self.resume_generator_manager = FacadeManager(
             self.llm_api_key, self.style_manager, self.resume_generator, self.resume_object, self.output_path
         )
-        time.sleep(5)
         os.system('cls' if os.name == 'nt' else 'clear')
         # Ensure style is selected
         self.resume_generator_manager.choose_style(test_flag=True)
@@ -59,7 +58,6 @@ class TestPDFGeneration(unittest.TestCase):
         logger.info("Generating PDF...")
         pdf_base64 = self.resume_generator_manager.pdf_base64()
         self.assertIsNotNone(pdf_base64)
-        time.sleep(5)
 
         # Save the PDF to disk
         folder_path = 'generated_cv'
