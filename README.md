@@ -125,12 +125,6 @@ python -m unittest lib_resume_builder_AIHawk/unit-test/pdf_generation.py
 
 **Note:** For end-to-end (E2E) tests, you need to provide a valid API token. Ensure you have set this up before running the full test suite.
 
-### Contributing Guidelines
-
-1. Create a new branch for your feature or bugfix.
-2. Make your changes and commit them with a clear, descriptive commit message.
-3. Ensure all tests pass before pushing your changes.
-4. Push your branch and create a pull request.
 
 ### Pre-commit Hooks
 
