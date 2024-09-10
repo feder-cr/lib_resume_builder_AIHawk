@@ -16,7 +16,7 @@ Act as an HR expert and resume writer with a specialization in creating ATS-frie
 
 1. **Institution Name and Location**: Specify the university or educational institution’s name and location.
 2. **Degree and Field of Study**: Clearly indicate the degree earned and the field of study.
-3. **GPA**: Include your GPA if it is strong and relevant.
+3. **Grade**: Include your Grade if it is strong and relevant.
 4. **Relevant Coursework**: List key courses with their grades to showcase your academic strengths.
 
 - **My information:**  
