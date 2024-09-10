@@ -1,7 +1,7 @@
 # How to Contribute: Web Designers
 
 Welcome to **Resume_Builder_AIHawk**! As a web designer, you have the exciting opportunity to contribute your custom CSS styles to our project. This not only allows you to showcase your design skills but also helps improve the resume templates for everyone. Here's a step-by-step guide on how to add your styles and contribute to the project.
-Once your styles are merged, they will also be added to the principal repository at [feder-cr/linkedIn_auto_jobs_applier_with_AI](https://github.com/feder-cr/linkedIn_auto_jobs_applier_with_AI), which has around 3,000 stars. This offers a significant opportunity for exposure and publicity for your work.
+Once your styles are merged, they will also be added to the principal repository at [feder-cr/linkedIn_auto_jobs_applier_with_AI](https://github.com/feder-cr/linkedIn_auto_jobs_applier_with_AI), which has around 11k stars. This offers a significant opportunity for exposure and publicity for your work.
 
 Thank you for contributing and helping to make our resume templates even better!
 
@@ -36,137 +36,147 @@ Create a new CSS file to introduce your unique styling for the resume templates.
         </div>
     </header>
 
-    <section id="education">
-        <h2>Education</h2>
-        <div class="entry">
-            <div class="entry-header">
-                <span class="entry-name">[University Name]</span>
-                <span class="entry-location">[Location]</span>
+    <main>
+        <section id="education">
+            <h2>Education</h2>
+            <div class="entry">
+              <div class="entry-header">
+                  <span class="entry-name">[University Name]</span>
+                  <span class="entry-location">[Location] </span>
+              </div>
+              <div class="entry-details">
+                  <span class="entry-title">[Degree] in [Field of Study] | Grade: [Your Grade]</span>
+                  <span class="entry-year">[Start Year] – [End Year]  </span>
+              </div>
+              <ul class="compact-list">
+                  <li>[Course Name] → Grade: [Grade]</li>
+                  <li>[Course Name] → Grade: [Grade]</li>
+                  <li>[Course Name] → Grade: [Grade]</li>
+                  <li>[Course Name] → Grade: [Grade]</li>
+                  <li>[Course Name] → Grade: [Grade]</li>
+              </ul>
             </div>
-            <div class="entry-details">
-                <span class="entry-title">[Degree] in [Field of Study] | GPA: [Your GPA]/4.0</span>
-                <span class="entry-year">[Start Year] – [End Year]</span>
+        </section>
+    
+        <section id="work-experience">
+            <h2>Work Experience</h2>
+            <div class="entry">
+                <div class="entry-header">
+                    <span class="entry-name">[Company Name]</span>
+                    <span class="entry-location"> — [Location]</span>
+                </div>
+                <div class="entry-details">
+                    <span class="entry-title">[Your Job Title]</span>
+                    <span class="entry-year">[Start Date] – [End Date]</span>
+                </div>
+                <ul class="compact-list">
+                    <li>[Describe your responsibilities and achievements in this role]</li>
+                    <li>[Describe any key projects or technologies you worked with]</li>
+                    <li>[Mention any notable accomplishments or results]</li>
+                </ul>
             </div>
+            <div class="entry">
+                <div class="entry-header">
+                    <span class="entry-name">[Company Name]</span>
+                    <span class="entry-location"> — [Location]</span>
+                </div>
+                <div class="entry-details">
+                    <span class="entry-title">[Your Job Title]</span>
+                    <span class="entry-year">[Start Date] – [End Date]</span>
+                </div>
+                <ul class="compact-list">
+                    <li>[Describe your responsibilities and achievements in this role]</li>
+                    <li>[Describe any key projects or technologies you worked with]</li>
+                    <li>[Mention any notable accomplishments or results]</li>
+                </ul>
+            </div>
+            <div class="entry">
+                <div class="entry-header">
+                    <span class="entry-name">[Company Name]</span>
+                    <span class="entry-location"> — [Location]</span>
+                </div>
+                <div class="entry-details">
+                    <span class="entry-title">[Your Job Title]</span>
+                    <span class="entry-year">[Start Date] – [End Date]</span>
+                </div>
+                <ul class="compact-list">
+                    <li>[Describe your responsibilities and achievements in this role]</li>
+                    <li>[Describe any key projects or technologies you worked with]</li>
+                    <li>[Mention any notable accomplishments or results]</li>
+                </ul>
+            </div>
+        </section>
+    
+        <section id="side-projects">
+            <h2>Side Projects</h2>
+            <div class="entry">
+                <div class="entry-header">
+                    <span class="entry-name"><i class="fab fa-github"></i> <a href="[Github Repo or Link]">[Project Name]</a></span>
+                </div>
+                <ul class="compact-list">
+                    <li>[Describe any notable recognition or reception]</li>
+                    <li>[Describe any notable recognition or reception]</li>
+                </ul>
+            </div>
+            <div class="entry">
+                <div class="entry-header">
+                    <span class="entry-name"><i class="fab fa-github"></i> <a href="[Github Repo or Link]">[Project Name]</a></span>
+                </div>
+                <ul class="compact-list">
+                    <li>[Describe any notable recognition or reception]</li>
+                    <li>[Describe any notable recognition or reception]</li>
+                </ul>
+            </div>
+            <div class="entry">
+                <div class="entry-header">
+                    <span class="entry-name"><i class="fab fa-github"></i> <a href="[Github Repo or Link]">[Project Name]</a></span>
+                </div>
+                <ul class="compact-list">
+                    <li>[Describe any notable recognition or reception]</li>
+                    <li>[Describe any notable recognition or reception]</li>
+                </ul>
+            </div>
+        </section>
+    
+        <section id="achievements">
+            <h2>Achievements</h2>
             <ul class="compact-list">
-                <li>[Course Name] → GPA: [Grade]/4.0</li>
-                <li>[Course Name] → GPA: [Grade]/4.0</li>
-                <li>[Course Name] → GPA: [Grade]/4.0</li>
-                <li>[Course Name] → GPA: [Grade]/4.0</li>
-                <li>[Course Name] → GPA: [Grade]/4.0</li>
+                <li><strong>[Award or Recognition or Scholarship or Honor]:</strong> [Describe]</li>
+                <li><strong>[Award or Recognition or Scholarship or Honor]:</strong> [Describe]</li>
+                <li><strong>[Award or Recognition or Scholarship or Honor]:</strong> [Describe]</li>
             </ul>
-        </div>
-    </section>
+        </section>
 
-    <section id="work-experience">
-        <h2>Work Experience</h2>
-        <div class="entry">
-            <div class="entry-header">
-                <span class="entry-name">[Company Name]</span>
-                <span class="entry-location"> — [Location]</span>
-            </div>
-            <div class="entry-details">
-                <span class="entry-title">[Your Job Title]</span>
-                <span class="entry-year">[Start Date] – [End Date]</span>
-            </div>
+        <section id="certifications">
+            <h2>Certifications</h2>
             <ul class="compact-list">
-                <li>[Describe your responsibilities and achievements in this role]</li>
-                <li>[Describe any key projects or technologies you worked with]</li>
-                <li>[Mention any notable accomplishments or results]</li>
+              <li><strong>[Certification Name]:</strong> [Describe]</li>
+              <li><strong>[Certification Name]:</strong> [Describe]</li>
             </ul>
-        </div>
-        <div class="entry">
-            <div class="entry-header">
-                <span class="entry-name">[Company Name]</span>
-                <span class="entry-location"> — [Location]</span>
+        </section>
+    
+        <section id="skills-languages">
+            <h2>Additional Skills</h2>
+            <div class="two-column">
+                <ul class="compact-list">
+                    <li>[Specific Skill or Technology]</li>
+                    <li>[Specific Skill or Technology]</li>
+                    <li>[Specific Skill or Technology]</li>
+                    <li>[Specific Skill or Technology]</li>
+                    <li>[Specific Skill or Technology]</li>
+                    <li>[Specific Skill or Technology]</li>
+                </ul>
+                <ul class="compact-list">
+                    <li>[Specific Skill or Technology]</li>
+                    <li>[Specific Skill or Technology]</li>
+                    <li>[Specific Skill or Technology]</li>
+                    <li>[Specific Skill or Technology]</li>
+                    <li>[Specific Skill or Technology]</li>
+                    <li><strong>Languages:</strong></li>
+                </ul>
             </div>
-            <div class="entry-details">
-                <span class="entry-title">[Your Job Title]</span>
-                <span class="entry-year">[Start Date] – [End Date]</span>
-            </div>
-            <ul class="compact-list">
-                <li>[Describe your responsibilities and achievements in this role]</li>
-                <li>[Describe any key projects or technologies you worked with]</li>
-                <li>[Mention any notable accomplishments or results]</li>
-            </ul>
-        </div>
-        <div class="entry">
-            <div class="entry-header">
-                <span class="entry-name">[Company Name]</span>
-                <span class="entry-location"> — [Location]</span>
-            </div>
-            <div class="entry-details">
-                <span class="entry-title">[Your Job Title]</span>
-                <span class="entry-year">[Start Date] – [End Date]</span>
-            </div>
-            <ul class="compact-list">
-                <li>[Describe your responsibilities and achievements in this role]</li>
-                <li>[Describe any key projects or technologies you worked with]</li>
-                <li>[Mention any notable accomplishments or results]</li>
-            </ul>
-        </div>
-    </section>
-
-    <section id="side-projects">
-        <h2>Side Projects</h2>
-        <div class="entry">
-            <div class="entry-header">
-                <span class="entry-name"><i class="fab fa-github"></i> <a href="[Github Repo or Link]">[Project Name]</a></span>
-            </div>
-            <ul class="compact-list">
-                <li>[Describe any notable recognition or reception]</li>
-                <li>[Describe any notable recognition or reception]</li>
-            </ul>
-        </div>
-        <div class="entry">
-            <div class="entry-header">
-                <span class="entry-name"><i class="fab fa-github"></i> <a href="[Github Repo or Link]">[Project Name]</a></span>
-            </div>
-            <ul class="compact-list">
-                <li>[Describe any notable recognition or reception]</li>
-                <li>[Describe any notable recognition or reception]</li>
-            </ul>
-        </div>
-        <div class="entry">
-            <div class="entry-header">
-                <span class="entry-name"><i class="fab fa-github"></i> <a href="[Github Repo or Link]">[Project Name]</a></span>
-            </div>
-            <ul class="compact-list">
-                <li>[Describe any notable recognition or reception]</li>
-                <li>[Describe any notable recognition or reception]</li>
-            </ul>
-        </div>
-    </section>
-
-    <section id="achievements">
-        <h2>Achievements</h2>
-        <ul class="compact-list">
-            <li><strong>[Award or Recognition or Scholarship or Honor]:</strong> [Describe]</li>
-            <li><strong>[Award or Recognition or Scholarship or Honor]:</strong> [Describe]</li>
-            <li><strong>[Award or Recognition or Scholarship or Honor]:</strong> [Describe]</li>
-        </ul>
-    </section>
-
-    <section id="skills-languages">
-        <h2>Additional Skills</h2>
-        <div class="two-column">
-            <ul class="compact-list">
-                <li>[Specific Skill or Technology]</li>
-                <li>[Specific Skill or Technology]</li>
-                <li>[Specific Skill or Technology]</li>
-                <li>[Specific Skill or Technology]</li>
-                <li>[Specific Skill or Technology]</li>
-                <li>[Specific Skill or Technology]</li>
-            </ul>
-            <ul class="compact-list">
-                <li>[Specific Skill or Technology]</li>
-                <li>[Specific Skill or Technology]</li>
-                <li>[Specific Skill or Technology]</li>
-                <li>[Specific Skill or Technology]</li>
-                <li>[Specific Skill or Technology]</li>
-                <li><strong>Languages:</strong></li>
-            </ul>
-        </div>
-    </section>
+        </section>
+    </main>
 </body>
 ```
 ## Contribute
