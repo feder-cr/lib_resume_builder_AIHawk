@@ -8,7 +8,7 @@ from lib_resume_builder_AIHawk.utils import HTML_to_PDF
 import webbrowser
 
 class FacadeManager:
-    def __init__(self, api_key, style_manager, resume_generator, resume_object, log_path, config):
+    def __init__(self, api_key, style_manager, resume_generator, resume_object, log_path, config=None):
         # Ottieni il percorso assoluto della directory della libreria
         lib_directory = Path(__file__).resolve().parent
         global_config.STRINGS_MODULE_RESUME_PATH = lib_directory / "resume_prompt/strings_feder-cr.py"
@@ -17,9 +17,14 @@ class FacadeManager:
         global_config.STYLES_DIRECTORY = lib_directory / "resume_style"
         global_config.LOG_OUTPUT_FILE_PATH = log_path
         global_config.API_KEY = api_key
-        global_config.LLM_MODEL = config['llm_model']
-        global_config.LLM_MODEL_TYPE = config['llm_model_type']
-        global_config.LLM_API_URL = config['llm_api_url']
+        if config is not None:
+            global_config.LLM_MODEL = config['llm_model']
+            global_config.LLM_MODEL_TYPE = config['llm_model_type']
+            global_config.LLM_API_URL = config['llm_api_url']
+        else:
+            global_config.LLM_MODEL = 'gpt-4o'
+            global_config.LLM_MODEL_TYPE = 'openai'
+            global_config.LLM_API_URL = 'https://api.openai.com/v1/'
         self.style_manager = style_manager
         self.style_manager.set_styles_directory(global_config.STYLES_DIRECTORY)
         self.resume_generator = resume_generator
