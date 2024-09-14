@@ -1,0 +1,11 @@
+# File: .pre-commit-config.yaml
+repos:
+-   repo: local
+    hooks:
+    -   id: python-e2e-test
+        name: Python e2e test
+        entry: python -m unittest -v lib_resume_builder_AIHawk/unit-test/pdf_generation.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [commit]

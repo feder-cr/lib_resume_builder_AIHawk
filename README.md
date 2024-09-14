@@ -94,6 +94,45 @@ You can also contribute by:
 - Suggesting new features
 - Improving documentation
 
+## Testing and Contributing
+
+### Setting Up the Development Environment
+
+1. Clone the repository:
+   ```
+   git clone [repository_url]
+   cd [repository_name]
+   ```
+
+2. Install dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
+
+3. Set up pre-commit hooks:
+   ```
+   pip install pre-commit
+   pre-commit install
+   ```
+
+### Running Tests
+
+To run the unit tests:
+
+```bash
+python -m unittest lib_resume_builder_AIHawk/unit-test/pdf_generation.py
+```
+
+**Note:** For end-to-end (E2E) tests, you need to provide a valid API token. Ensure you have set this up before running the full test suite.
+
+
+### Pre-commit Hooks
+
+We use pre-commit hooks to maintain code quality and run tests automatically before each commit. The pre-commit configuration will run the unit tests specified above.
+
+**Important:** Always run `pre-commit install` after cloning the repository or when the pre-commit configuration changes. This ensures you have the latest checks in place and prevents pushing potential bugs to the repository.
+
+If you encounter any issues or have questions, please open an issue in the repository or contact the maintainers.
 
 ## License
 
