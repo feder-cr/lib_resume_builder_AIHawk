@@ -209,10 +209,10 @@ class LoggerChatModel:
 
 
 class LLMResumeJobDescription:
-    def __init__(self, openai_api_key, strings):
+    def __init__(self, strings):
         self.ai_adapter = AIAdapter()
         self.llm_cheap = LoggerChatModel(self.ai_adapter)
-        self.llm_embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
+        self.llm_embeddings = OpenAIEmbeddings(openai_api_key=global_config.API_KEY)
         self.strings = strings
 
     @staticmethod

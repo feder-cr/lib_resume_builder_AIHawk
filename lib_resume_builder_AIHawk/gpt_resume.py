@@ -20,6 +20,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from lib_resume_builder_AIHawk.config import global_config
 
+
 load_dotenv()
 
 log_folder = 'log'
@@ -336,13 +337,12 @@ class LoggerChatModel:
 
 
 class LLMResumer:
-    def __init__(self, config, llm_api_key):
+    def __init__(self,strings):
         self.job_description = None
-        self.strings = None
+        self.strings = strings
         self.resume = None
         self.ai_adapter = AIAdapter()
         self.llm_cheap = LoggerChatModel(self.ai_adapter)
-
 
     @staticmethod
     def _preprocess_template_string(template: str) -> str:
