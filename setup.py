@@ -25,6 +25,7 @@ setup(
         'faiss-cpu',
         'pydantic',
         'pydantic[email]',
+        'pdfminer.six',
     ],
     classifiers=[
         'Programming Language :: Python :: 3',

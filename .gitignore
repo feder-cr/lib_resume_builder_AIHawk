@@ -12,3 +12,4 @@ generated_cv
 plain_text_resume*
 secrets.*
 /lib_resume_builder_AIHawk/unit-test/yaml_example/*
+pdf_to_yaml.py
