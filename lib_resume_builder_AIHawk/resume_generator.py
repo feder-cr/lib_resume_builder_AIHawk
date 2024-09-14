@@ -25,6 +25,7 @@ class ResumeGenerator:
         gpt_answerer = LLMResumer(global_config.API_KEY, strings)
         self._create_resume(gpt_answerer, style_path, temp_html_file)
 
+
     def create_resume_job_description_url(self, style_path: str, url_job_description: str, temp_html_path):
         strings = load_module(global_config.STRINGS_MODULE_RESUME_JOB_DESCRIPTION_PATH, global_config.STRINGS_MODULE_NAME)
         gpt_answerer = LLMResumeJobDescription(global_config.API_KEY, strings)

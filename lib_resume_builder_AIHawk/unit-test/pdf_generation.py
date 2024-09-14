@@ -38,7 +38,7 @@ class TestPDFGeneration(unittest.TestCase):
         logger.info(self.plain_text_resume)
         self.resume_object = Resume(self.plain_text_resume)
         self.resume_generator_manager = FacadeManager(
-            self.llm_api_key, self.style_manager, self.resume_generator, self.resume_object, self.output_path
+            self.llm_api_key, self.style_manager, self.resume_generator, self.resume_object, self.output_path, self.config
         )
         os.system('cls' if os.name == 'nt' else 'clear')
         # Ensure style is selected

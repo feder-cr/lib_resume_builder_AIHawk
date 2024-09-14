@@ -4,7 +4,9 @@ import tempfile
 import textwrap
 import time
 from datetime import datetime
-from typing import Dict, List
+from typing import Dict, List, Union
+
+import httpx
 from langchain_community.document_loaders import TextLoader
 from langchain_core.messages.ai import AIMessage
 from langchain_core.output_parsers import StrOutputParser
@@ -23,6 +25,7 @@ import re  # For regex parsing, especially in `parse_wait_time_from_error_messag
 from requests.exceptions import HTTPError as HTTPStatusError  # Handling HTTP status errors
 import openai
 
+from lib_resume_builder_AIHawk.gpt_resume import OpenAIModel, OllamaModel, ClaudeModel, GeminiModel, AIAdapter
 
 load_dotenv()
 
@@ -106,80 +109,109 @@ class LLMLogger:
 
 class LoggerChatModel:
 
-    def __init__(self, llm: ChatOpenAI):
+    def __init__(self, llm: Union[OpenAIModel, OllamaModel, ClaudeModel, GeminiModel]):
         self.llm = llm
+        logger.debug(
+            "LoggerChatModel successfully initialized with LLM: %s", llm)
 
     def __call__(self, messages: List[Dict[str, str]]) -> str:
-        max_retries = 15
-        retry_delay = 10
-
-        for attempt in range(max_retries):
+        logger.debug("Entering __call__ method with messages: %s", messages)
+        while True:
             try:
+                logger.debug("Attempting to call the LLM with messages")
 
-                reply = self.llm(messages)
+                reply = self.llm.invoke(messages)
+                logger.debug("LLM response received: %s", reply)
+
                 parsed_reply = self.parse_llmresult(reply)
-                LLMLogger.log_request(prompts=messages, parsed_reply=parsed_reply)
-                return reply
-            except (openai.RateLimitError, HTTPStatusError) as err:
-                if isinstance(err, HTTPStatusError) and err.response.status_code == 429:
-                    self.logger.warning(f"HTTP 429 Too Many Requests: Waiting for {retry_delay} seconds before retrying (Attempt {attempt + 1}/{max_retries})...")
-                    time.sleep(retry_delay)
-                    retry_delay *= 2
-                else:
-                    wait_time = self.parse_wait_time_from_error_message(str(err))
-                    self.logger.warning(f"Rate limit exceeded or API error. Waiting for {wait_time} seconds before retrying (Attempt {attempt + 1}/{max_retries})...")
-                    time.sleep(wait_time)
-            except Exception as e:
-                self.logger.error(f"Unexpected error occurred: {str(e)}, retrying in {retry_delay} seconds... (Attempt {attempt + 1}/{max_retries})")
-                time.sleep(retry_delay)
-                retry_delay *= 2
+                logger.debug("Parsed LLM reply: %s", parsed_reply)
 
-        self.logger.critical("Failed to get a response from the model after multiple attempts.")
-        raise Exception("Failed to get a response from the model after multiple attempts.")
+                LLMLogger.log_request(
+                    prompts=messages, parsed_reply=parsed_reply)
+                logger.debug("Request successfully logged")
+
+                return reply
+
+            except httpx.HTTPStatusError as e:
+                logger.error("HTTPStatusError encountered: %s", str(e))
+                if e.response.status_code == 429:
+                    retry_after = e.response.headers.get('retry-after')
+                    retry_after_ms = e.response.headers.get('retry-after-ms')
+
+                    if retry_after:
+                        wait_time = int(retry_after)
+                        logger.warning(
+                            "Rate limit exceeded. Waiting for %d seconds before retrying (extracted from 'retry-after' header)...",
+                            wait_time)
+                        time.sleep(wait_time)
+                    elif retry_after_ms:
+                        wait_time = int(retry_after_ms) / 1000.0
+                        logger.warning(
+                            "Rate limit exceeded. Waiting for %f seconds before retrying (extracted from 'retry-after-ms' header)...",
+                            wait_time)
+                        time.sleep(wait_time)
+                    else:
+                        wait_time = 30
+                        logger.warning(
+                            "'retry-after' header not found. Waiting for %d seconds before retrying (default)...",
+                            wait_time)
+                        time.sleep(wait_time)
+                else:
+                    logger.error("HTTP error occurred with status code: %d, waiting 30 seconds before retrying",
+                                 e.response.status_code)
+                    time.sleep(30)
+
+            except Exception as e:
+                logger.error("Unexpected error occurred: %s", str(e))
+                logger.info(
+                    "Waiting for 30 seconds before retrying due to an unexpected error.")
+                time.sleep(30)
+                continue
 
     def parse_llmresult(self, llmresult: AIMessage) -> Dict[str, Dict]:
-        content = llmresult.content
-        response_metadata = llmresult.response_metadata
-        id_ = llmresult.id
-        usage_metadata = llmresult.usage_metadata
-        parsed_result = {
-            "content": content,
-            "response_metadata": {
-                "model_name": response_metadata.get("model_name", ""),
-                "system_fingerprint": response_metadata.get("system_fingerprint", ""),
-                "finish_reason": response_metadata.get("finish_reason", ""),
-                "logprobs": response_metadata.get("logprobs", None),
-            },
-            "id": id_,
-            "usage_metadata": {
-                "input_tokens": usage_metadata.get("input_tokens", 0),
-                "output_tokens": usage_metadata.get("output_tokens", 0),
-                "total_tokens": usage_metadata.get("total_tokens", 0),
-            },
-        }
-        return parsed_result
+        logger.debug("Parsing LLM result: %s", llmresult)
 
-    def parse_wait_time_from_error_message(self, error_message: str) -> int:
-        # Extract wait time from error message
-        match = re.search(r"Please try again in (\d+)([smhd])", error_message)
-        if match:
-            value, unit = match.groups()
-            value = int(value)
-            if unit == "s":
-                return value
-            elif unit == "m":
-                return value * 60
-            elif unit == "h":
-                return value * 3600
-            elif unit == "d":
-                return value * 86400
-        # Default wait time if not found
-        return 30
+        try:
+            content = llmresult.content
+            response_metadata = llmresult.response_metadata
+            id_ = llmresult.id
+            usage_metadata = llmresult.usage_metadata
+
+            parsed_result = {
+                "content": content,
+                "response_metadata": {
+                    "model_name": response_metadata.get("model_name", ""),
+                    "system_fingerprint": response_metadata.get("system_fingerprint", ""),
+                    "finish_reason": response_metadata.get("finish_reason", ""),
+                    "logprobs": response_metadata.get("logprobs", None),
+                },
+                "id": id_,
+                "usage_metadata": {
+                    "input_tokens": usage_metadata.get("input_tokens", 0),
+                    "output_tokens": usage_metadata.get("output_tokens", 0),
+                    "total_tokens": usage_metadata.get("total_tokens", 0),
+                },
+            }
+
+            logger.debug("Parsed LLM result successfully: %s", parsed_result)
+            return parsed_result
+
+        except KeyError as e:
+            logger.error(
+                "KeyError while parsing LLM result: missing key %s", str(e))
+            raise
+
+        except Exception as e:
+            logger.error(
+                "Unexpected error while parsing LLM result: %s", str(e))
+            raise
+
 
 
 class LLMResumeJobDescription:
     def __init__(self, openai_api_key, strings):
-        self.llm_cheap = LoggerChatModel(ChatOpenAI(model_name="gpt-4o-mini", openai_api_key=openai_api_key, temperature=0.4))
+        self.ai_adapter = AIAdapter()
+        self.llm_cheap = LoggerChatModel(self.ai_adapter)
         self.llm_embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
         self.strings = strings
 
