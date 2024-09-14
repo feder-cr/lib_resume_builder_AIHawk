@@ -8,7 +8,7 @@ from lib_resume_builder_AIHawk.config import global_config
 
 class ResumeGenerator:
     def __init__(self):
-        pass
+        self.resume_object = None
     
     def set_resume_object(self, resume_object):
          self.resume_object = resume_object
