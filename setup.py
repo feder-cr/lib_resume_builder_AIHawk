@@ -19,7 +19,7 @@ setup(
         'langsmith',
         'openai',
         'regex==2024.7.24',
-        'selenium==4.24.0',
+        'selenium==4.9.1',
         'webdriver-manager==4.0.2',
         'inquirer',
         'faiss-cpu',
