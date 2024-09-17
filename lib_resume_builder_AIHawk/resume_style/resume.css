@@ -1,0 +1,138 @@
+<body>
+    <header>
+        <h1>Shadal Manayullathil</h1>
+        <div class="contact-info">
+            <p class="fas fa-map-marker-alt">
+                <span>Bengaluru, India</span>
+            </p>
+            <p class="fas fa-phone">
+                <span>+91 6282867549</span>
+            </p>
+            <p class="fas fa-envelope">
+                <span>sha_dal.acca@protonmail.ch</span>
+            </p>
+            <p class="fab fa-linkedin">
+                <a href="https://www.linkedin.com/in/shadal-m-1468411a9/">LinkedIn</a>
+            </p>
+        </div>
+    </header>
+
+    <main>
+        <section id="education">
+            <h2>Education</h2>
+            <div class="entry">
+              <div class="entry-header">
+                  <span class="entry-name">Association of Charted Certified Accountants</span>
+                  <span class="entry-location">London, United Kingdom </span>
+              </div>
+              <div class="entry-details">
+                  <span class="entry-title">Advanced Diploma in Accounting & Business </span>
+                  <span class="entry-year">[2018 – 2024]  </span>
+              </div>
+              </ul>
+            </div>
+        </section>
+    
+        <section id="work-experience">
+            <h2>Work Experience</h2>
+           <div class="entry">
+                <div class="entry-header">
+                    <span class="entry-name">Sierra Dalzeil</span>
+                    <span class="entry-location"> — Dubai, UAE</span>
+                </div>
+                <div class="entry-details">
+                    <span class="entry-title">Graphic Designer, Manager</span>
+                    <span class="entry-year">[2023 – Present]</span>
+                </div>
+                <ul class="compact-list">
+                    <li>Co-founded Sierra Dalziel, a virtual company, along with friends</li>
+                    <li>Working as a freelance graphic designer, utilizing tools such as Adobe Photoshop and Illustrator for various projects</li>
+                    <li>Also managed accounts in QuickBooks</li>
+                </ul>
+            </div>
+            <div class="entry">
+                <div class="entry-header">
+                    <span class="entry-name">Finspell Trading Community</span>
+                    <span class="entry-location"> — Kochi, India</span>
+                </div>
+                <div class="entry-details">
+                    <span class="entry-title">Stock Trader</span>
+                    <span class="entry-year">[2020 – Present]</span>
+                </div>
+                <ul class="compact-list">
+                    <li>Learned market analyis and stock trading</li>
+                    <li>Successfully traded equity shares and options to self-fund living expenses</li>
+                    <li>Achieved consistent profits by analyzing market trends and implementing trading strategies</li>
+                </ul>
+            </div>
+            <div class="entry">
+                <div class="entry-header">
+                    <span class="entry-name">Emilda Solutions Private Limimited</span>
+                    <span class="entry-location"> — Bengaluru, India</span>
+                </div>
+                <div class="entry-details">
+                    <span class="entry-title">Accounts Assistant</span>
+                    <span class="entry-year">[2020 – 2022]</span>
+                </div>
+                <ul class="compact-list">
+                    <li>Managed QuickBooks to streamline accounting processes</li>
+                    <li>Designed and implemented new management controls, improving management efficiency by 20%</li>
+                    <li>Maintained a steady cash balance, reducing monthly expenses by 15%</li>
+                </ul>
+            </div>
+            <div class="entry">
+                <div class="entry-header">
+                    <span class="entry-name">Auda Associates</span>
+                    <span class="entry-location"> — Kannur, India</span>
+                </div>
+                <div class="entry-details">
+                    <span class="entry-title">Tax Associate</span>
+                    <span class="entry-year">[2020 – 2020]</span>
+                </div>
+                <ul class="compact-list">
+                    <li>Assisted SMEs with GST and GCC VAT registration and filing</li>
+                    <li>Prepared financial reports for start-ups to help secure bank loans and subsidies</li>
+                </ul>
+            </div>
+        </section> 
+
+        <section id="certifications">
+            <h2>Certifications</h2>
+            <ul class="compact-list">
+              <li><strong>Ethics & Professional Skill Module:</strong> Certification from ACCA</li>
+              <li><strong>GCC VAT Procedures:</strong> Certification for GCC VAT Procedures Pratical Training Program conducted by Mavensmark Business Consultancy in association with Elance Learning Provider</li>
+              <li><strong>GST Practical Training Program:</strong> Certification for GST Online Workshop conducted by Mavensmark Business Consultancy in association with Elance LEarning Provider</li>
+	      <li><strong>Cyber Security Nano Diploma:</strong> Certification from Edapt Instructors</li>
+
+            </ul>
+        </section>
+    
+        <section id="languages">
+            <h2>Languages</h2>
+            <div class="two-column">
+                <ul class="compact-list">
+                    <li><strong>Malayalam:</strong> Native</li>
+                    <li><strong>English:</strong> Fluent</li>
+                    <li><strong>Hindi:</strong> Conversational</li>
+                    <li><strong>German:</strong> Basic</li>
+                    <li><strong>Kannada:</strong> Basic</li>
+                    <li><strong>Telugu:</strong> Basic</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="Skills">
+            <h2>Skills</h2>
+            <div class="two-column">
+                <ul class="compact-list">
+                    <li>Financial Analysis, Data Interpretation, Budgeting and Forecasting</li>
+                    <li>Quickbooks, Tally ERP</li>
+                    <li>Microsoft Office, MetaTrader 5</li>
+                    <li>GCC VAT, Indian GST</li>
+                    <li>Adobe Apps, CorelDraw</li>
+                 </ul>
+            </div>
+        </section>
+
+    </main>
+</body>
