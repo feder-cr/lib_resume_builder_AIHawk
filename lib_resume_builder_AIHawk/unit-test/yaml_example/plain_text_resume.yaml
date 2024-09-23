@@ -11,10 +11,11 @@ personal_information:
   linkedin: https://linkedin.com/in/johndoe
   github: https://github.com/johndoe
 education_details:
-  - degree: B.Sc
-    university: NYU
-    gpa: "3.8"
-    graduation_year: 2012
+  - education_level: B.Sc
+    institution: NYU
+    final_evaluation_grade: "3.8"
+    start_date: "2008"
+    year_of_completion: 2012
     field_of_study: Computer Science
     exam: []
 experience_details:
@@ -36,7 +37,8 @@ achievements:
   - name: Award A
     description: Best Employee of the Year
 certifications:
-  - Certified Python Developer
+  - name: Certified Python Developer
+    description: A certification for Python developers
 languages:
   - language: English
     proficiency: Fluent

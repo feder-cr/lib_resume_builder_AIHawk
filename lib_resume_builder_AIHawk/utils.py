@@ -11,10 +11,9 @@ def create_driver_selenium():
 
     chrome_install = ChromeDriverManager().install()
     folder = os.path.dirname(chrome_install)
-    chromedriver_path = os.path.join(folder, "chromedriver.exe")
 
+    service = ChromeService(ChromeDriverManager().install())
 
-    service = ChromeService(executable_path=chromedriver_path)
     return webdriver.Chrome(service=service, options=options)
 
 def HTML_to_PDF(FilePath):

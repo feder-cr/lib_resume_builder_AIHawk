@@ -1,5 +1,6 @@
 __pycache__
 .venv
+.python-version
 log
 /src/__pycache__
 test*
