@@ -5,6 +5,7 @@ personal_information:
   country: "Ireland"
   city: "Dublin"
   address: "Dublin 1"
+  zip_code: "520123"
   phone_prefix: "+353"
   phone: "892338335"
   email: "fedembare@gmail.com"
