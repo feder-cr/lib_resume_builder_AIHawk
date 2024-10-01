@@ -5,6 +5,7 @@ personal_information:
   country: USA
   city: New York
   address: 123 Main St
+  zip_code: "520123"
   phone_prefix: "+1"
   phone: "123-456-7890"
   email: john.doe@example.com

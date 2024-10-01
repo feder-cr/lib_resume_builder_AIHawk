@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import List, Dict, Any, Optional, Union
 import yaml
-from pydantic import BaseModel, EmailStr, HttpUrl
+from pydantic import BaseModel, EmailStr, HttpUrl, Field
 
 
 
@@ -12,6 +12,7 @@ class PersonalInformation(BaseModel):
     country: Optional[str]
     city: Optional[str]
     address: Optional[str]
+    zip_code: Optional[str] = Field(None, regex="^[0-9]{5,10}$")
     phone_prefix: Optional[str]
     phone: Optional[str]
     email: Optional[EmailStr]
