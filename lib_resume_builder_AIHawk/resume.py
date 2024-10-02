@@ -12,7 +12,7 @@ class PersonalInformation(BaseModel):
     country: Optional[str]
     city: Optional[str]
     address: Optional[str]
-    zip_code: Optional[str] = Field(None, regex="^[0-9]{5,10}$")
+    zip_code: Optional[str] = Field(None, min_length=5, max_length=10)
     phone_prefix: Optional[str]
     phone: Optional[str]
     email: Optional[EmailStr]
