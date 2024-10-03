@@ -8,37 +8,36 @@ from webdriver_manager.chrome import ChromeDriverManager
 from loguru import logger
 import sys
 
-logger.remove()  # Удаляем все существующие обработчики
-logger.add(sys.stdout, level="DEBUG")  # Добавляем обработчик с уровнем DEBUG
-
+logger.remove()  
+logger.add(sys.stdout, level="DEBUG") 
 def create_driver_selenium():
     logger.debug("Creating Selenium WebDriver with Chrome options.")
     options = get_chrome_browser_options()
     logger.debug(f"Options configured: {options.arguments}")
 
-    # Используем webdriver_manager для автоматической загрузки драйвера
+
     logger.debug("Installing ChromeDriver using webdriver_manager...")
     chrome_install = ChromeDriverManager(driver_version="129.0.6668.70").install()
     folder = os.path.dirname(chrome_install)
     chromedriver_path = os.path.join(folder, "chromedriver.exe")
     logger.debug(f"ChromeDriver installed at path: {chromedriver_path}")
 
-    # Настраиваем сервис для ChromeDriver
+
     service = ChromeService(executable_path=chromedriver_path)
     logger.debug("Starting Chrome WebDriver.")
     return webdriver.Chrome(service=service, options=options)
 
 def HTML_to_PDF(FilePath):
-    # Проверяем наличие файла перед конвертацией
+
     if not os.path.isfile(FilePath):
         logger.error(f"File not found: {FilePath}")
         raise FileNotFoundError(f"The specified file does not exist: {FilePath}")
     logger.info(f"Converting HTML file to PDF: {FilePath}")
 
-    # Формируем корректный путь для локального файла
+
     FilePath = f"file:///{os.path.abspath(FilePath).replace(os.sep, '/')}"
 
-    # Создаем драйвер
+
     driver = create_driver_selenium()
 
     try:
