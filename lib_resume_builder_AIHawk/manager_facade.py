@@ -102,7 +102,6 @@ class FacadeManager:
         logger.debug("Starting PDF generation process.")
         start_time = time.time()
 
-        # Проверка входных параметров
         if job_description_url is not None and job_description_text is not None:
             logger.error("Both 'job_description_url' and 'job_description_text' provided. Raising ValueError.")
             raise ValueError("Esattamente uno tra 'job_description_url' o 'job_description_text' deve essere fornito.")
@@ -115,13 +114,11 @@ class FacadeManager:
         style_path = self.style_manager.get_style_path(self.selected_style)
         logger.debug(f"Style path obtained: {style_path}")
 
-        # Создание временного HTML-файла
         logger.debug("Creating temporary HTML file.")
         with tempfile.NamedTemporaryFile(delete=False, mode='w', suffix='.html', encoding='utf-8') as temp_html_file:
             temp_html_path = temp_html_file.name
             logger.debug(f"Temporary HTML file created at path: {temp_html_path}")
 
-            # Генерация резюме
             if job_description_url is None and job_description_text is None:
                 logger.debug("Generating resume without job description.")
                 self.resume_generator.create_resume(style_path, temp_html_path)
@@ -135,13 +132,11 @@ class FacadeManager:
                 logger.error("Invalid input combination, returning None.")
                 return None
 
-        # Вызов функции HTML_to_PDF и логирование времени
         logger.debug(f"Starting HTML to PDF conversion for file: {temp_html_path}")
         pdf_conversion_start = time.time()
         pdf_base64 = HTML_to_PDF(temp_html_path)
         logger.debug(f"HTML to PDF conversion completed in {time.time() - pdf_conversion_start:.2f} seconds.")
 
-        # Удаление временного файла
         logger.debug(f"Removing temporary file: {temp_html_path}")
         os.remove(temp_html_path)
 
