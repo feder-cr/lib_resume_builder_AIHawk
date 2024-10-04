@@ -5,28 +5,43 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium import webdriver
 import time
 from webdriver_manager.chrome import ChromeDriverManager
+from loguru import logger
+import sys
+
+logger.remove()
+logger.add(sys.stdout, level="DEBUG")
 
 def create_driver_selenium():
-    options = get_chrome_browser_options()  # Usa il metodo corretto per ottenere le opzioni
+    logger.debug("Creating Selenium WebDriver with Chrome options.")
+    options = get_chrome_browser_options()
+    logger.debug(f"Options configured: {options.arguments}")
 
+    logger.debug("Installing ChromeDriver using webdriver_manager...")
     chrome_install = ChromeDriverManager().install()
     folder = os.path.dirname(chrome_install)
     chromedriver_path = os.path.join(folder, "chromedriver.exe")
-
+    logger.debug(f"ChromeDriver installed at path: {chromedriver_path}")
 
     service = ChromeService(executable_path=chromedriver_path)
+    logger.debug("Starting Chrome WebDriver.")
     return webdriver.Chrome(service=service, options=options)
 
 def HTML_to_PDF(FilePath):
-    # Validazione e preparazione del percorso del file
+
     if not os.path.isfile(FilePath):
+        logger.error(f"File not found: {FilePath}")
         raise FileNotFoundError(f"The specified file does not exist: {FilePath}")
+    logger.info(f"Converting HTML file to PDF: {FilePath}")
+
     FilePath = f"file:///{os.path.abspath(FilePath).replace(os.sep, '/')}"
+
     driver = create_driver_selenium()
 
     try:
+        logger.debug(f"Opening file in the browser: {FilePath}")
         driver.get(FilePath)
         time.sleep(2)
+        logger.debug("Executing Page.printToPDF command.")
         pdf_base64 = driver.execute_cdp_cmd("Page.printToPDF", {
             "printBackground": True,         # Include lo sfondo nella stampa
             "landscape": False,              # Stampa in verticale (False per ritratto)
@@ -42,40 +57,45 @@ def HTML_to_PDF(FilePath):
             "generateTaggedPDF": False,      # Non generare PDF taggato
             "transferMode": "ReturnAsBase64" # Restituire il PDF come stringa base64
         })
+        logger.info("PDF generation successful.")
         return pdf_base64['data']
     except WebDriverException as e:
+        logger.error(f"WebDriver exception occurred: {e}")
         raise RuntimeError(f"WebDriver exception occurred: {e}")
     finally:
+        logger.debug("Closing the browser.")
         driver.quit()
 
 def get_chrome_browser_options():
+    logger.debug("Configuring Chrome browser options.")
     options = webdriver.ChromeOptions()
-    options.add_argument("--start-maximized")  # Avvia il browser a schermo intero
-    options.add_argument("--no-sandbox")  # Disabilita la sandboxing per migliorare le prestazioni
-    options.add_argument("--disable-dev-shm-usage")  # Utilizza una directory temporanea per la memoria condivisa
-    options.add_argument("--ignore-certificate-errors")  # Ignora gli errori dei certificati SSL
-    options.add_argument("--disable-extensions")  # Disabilita le estensioni del browser
-    options.add_argument("--disable-gpu")  # Disabilita l'accelerazione GPU
-    options.add_argument("window-size=1200x800")  # Imposta la dimensione della finestra del browser
-    options.add_argument("--disable-background-timer-throttling")  # Disabilita il throttling dei timer in background
-    options.add_argument("--disable-backgrounding-occluded-windows")  # Disabilita la sospensione delle finestre occluse
-    options.add_argument("--disable-translate")  # Disabilita il traduttore automatico
-    options.add_argument("--disable-popup-blocking")  # Disabilita il blocco dei popup
-    #options.add_argument("--disable-features=VizDisplayCompositor")  # Disabilita il compositore di visualizzazione
-    options.add_argument("--no-first-run")  # Disabilita la configurazione iniziale del browser
-    options.add_argument("--no-default-browser-check")  # Disabilita il controllo del browser predefinito
-    options.add_argument("--single-process")  # Esegui Chrome in un solo processo
-    options.add_argument("--disable-logging")  # Disabilita il logging
-    options.add_argument("--disable-autofill")  # Disabilita l'autocompletamento dei moduli
-    #options.add_argument("--disable-software-rasterizer")  # Disabilita la rasterizzazione software
-    options.add_argument("--disable-plugins")  # Disabilita i plugin del browser
-    options.add_argument("--disable-animations")  # Disabilita le animazioni
-    options.add_argument("--disable-cache")  # Disabilita la cache
-    #options.add_argument('--proxy-server=localhost:8081')
-    #options.add_experimental_option("useAutomationExtension", False)  # Disabilita l'estensione di automazione di Chrome
-    options.add_experimental_option("excludeSwitches", ["enable-automation", "enable-logging"])  # Esclude switch della modalità automatica e logging
+    options.headless = True
 
-    options.add_argument("--single-process")  # Esegui Chrome in un solo processo
+    options_list = [
+        "--no-sandbox",
+        "--headless=new",
+        "--disable-dev-shm-usage",
+        "--ignore-certificate-errors",
+        "--disable-extensions",
+        "--disable-gpu",
+        "--disable-background-timer-throttling",
+        "--disable-backgrounding-occluded-windows",
+        "--disable-translate",
+        "--disable-popup-blocking",
+        "--no-first-run",
+        "--no-default-browser-check",
+        "--single-process",
+        "--disable-logging",
+        "--disable-autofill",
+        "--disable-plugins",
+        "--disable-animations",
+        "--disable-cache",
+    ]
+    for opt in options_list:
+        logger.debug(f"Adding option: {opt}")
+        options.add_argument(opt)
+
+    options.add_experimental_option("excludeSwitches", ["enable-automation", "enable-logging"])
     return options
 
 def printred(text):
