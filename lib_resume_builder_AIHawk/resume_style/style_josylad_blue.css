@@ -4,7 +4,7 @@
 
 body {
   font-family: 'Poppins', sans-serif;
-  line-height: 1.6;
+  line-height: 1.4;
   color: #2c3e50;
   max-width: 850px;
   margin: 0 auto;
@@ -17,13 +17,13 @@ header {
   text-align: center;
   margin-bottom: 20px;
   background-color: #3498db;
-  padding: 20px;
+  padding: 15px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-  font-size: 28pt;
+  font-size: 26pt;
   font-weight: 700;
   margin: 0 0 10px 0;
   color: #fff;
@@ -33,8 +33,8 @@ h1 {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 15px;
-  font-size: 10pt;
+  gap: 10px;
+  font-size: 9pt;
   font-weight: 300;
   color: #ecf0f1;
 }
@@ -59,18 +59,18 @@ h1 {
 }
 
 h2 {
-  font-size: 18pt;
+  font-size: 16pt;
   font-weight: 600;
   border-bottom: 2px solid #3498db;
   padding-bottom: 5px;
-  margin: 20px 0 15px 0;
+  margin: 20px 0 10px 0;
   color: #2c3e50;
 }
 
 .entry {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   background-color: #fff;
-  padding: 15px;
+  padding: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -97,20 +97,24 @@ h2 {
 }
 
 .compact-list li {
-  margin-bottom: 5px;
+  margin-bottom: 3px;
+  list-style-position: inside;
 }
+
 
 .two-column {
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .two-column ul {
   width: 48%;
   margin: 0;
   padding-left: 20px;
+  list-style-type: disc;
 }
+
 
 a {
   color: #3498db;
@@ -132,19 +136,19 @@ a:hover {
   }
 
   @page {
-    margin: 1cm;
+    margin: 1.5cm;
   }
 
   h1 {
-    font-size: 24pt;
+    font-size: 22pt;
   }
 
   h2 {
-    font-size: 16pt;
+    font-size: 14pt;
   }
 
   .contact-info {
-    font-size: 9pt;
+    font-size: 8pt;
   }
 
   .entry-details {
@@ -161,6 +165,6 @@ a:hover {
 
   .entry {
     box-shadow: none;
-    padding: 10px 0;
+    padding: 8px 0;
   }
 }
