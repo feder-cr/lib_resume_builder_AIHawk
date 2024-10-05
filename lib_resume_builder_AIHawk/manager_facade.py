@@ -23,14 +23,6 @@ class FacadeManager:
         global_config.STYLES_DIRECTORY = lib_directory / "resume_style"
         global_config.LOG_OUTPUT_FILE_PATH = log_path
         global_config.API_KEY = api_key
-        if config is not None:
-            global_config.LLM_MODEL = config['llm_model']
-            global_config.LLM_MODEL_TYPE = config['llm_model_type']
-            global_config.LLM_API_URL = config['llm_api_url']
-        else:
-            global_config.LLM_MODEL = 'gpt-4o'
-            global_config.LLM_MODEL_TYPE = 'openai'
-            global_config.LLM_API_URL = 'https://api.openai.com/v1/'
         self.style_manager = style_manager
         self.style_manager.set_styles_directory(global_config.STYLES_DIRECTORY)
         self.resume_generator = resume_generator
@@ -55,32 +47,18 @@ class FacadeManager:
         ]
         return inquirer.prompt(questions)['text']
 
-    def choose_style(self, test_flag=False):
+#не отправлять в pr
+    def choose_style(self):
         styles = self.style_manager.get_styles()
         if not styles:
             print("No styles available")
             return None
 
-        final_style_choice = "Create your resume style in CSS"
-        formatted_choices = self.style_manager.format_choices(styles)
-        formatted_choices.append(final_style_choice)
-
-        if test_flag:
-            # Automatically select the first available style during tests
-            selected_choice = formatted_choices[0]
-        else:
-            selected_choice = self.prompt_user(formatted_choices, "Which style would you like to adopt?")
-
-
-        if selected_choice == final_style_choice:
-            tutorial_url = "https://github.com/feder-cr/lib_resume_builder_AIHawk/blob/main/how_to_contribute/web_designer.md"
-            print("\nOpening tutorial in your browser...")
-            webbrowser.open(tutorial_url)
-            exit()
-        else:
-            self.selected_style = selected_choice.split(' (')[0]
-            print(f"Style selected: {self.selected_style}")
-            return self.selected_style
+        # Получаем первый ключ из словаря стилей
+        first_style = next(iter(styles))
+        self.selected_style = first_style
+        print(f"Style selected: {self.selected_style}")
+        return self.selected_style
 
     def prompt_user_with_input(self, choices: list[str]) -> str:
 
