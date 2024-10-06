@@ -34,26 +34,31 @@ To implement this, follow these steps:
   {job_description}
 """+ prompt_education_template
 
-
 prompt_working_experience = """
-Act as an HR expert and resume writer with a specialization in creating ATS-friendly resumes. Your task is to detail the work experience for a resume, ensuring it aligns with the provided job description. For each job entry, ensure you include:
+Act as an HR expert and resume writer with a specialization in creating ATS-friendly resumes. Your task is to **tailor the work experience** section of the resume **to align closely with the job description provided**, making sure it highlights relevant skills, achievements, and responsibilities. 
 
-1. **Company Name and Location**: Provide the name of the company and its location.
-2. **Job Title**: Clearly state your job title.
-3. **Dates of Employment**: Include the start and end dates of your employment.
-4. **Responsibilities and Achievements**: Describe your key responsibilities and notable achievements, emphasizing measurable results and specific contributions.
+For each job entry, make sure to:
 
-Ensure that the descriptions highlight relevant experience and align with the job description.
+1. **Company Name and Location**: Clearly state the name of the company and where it is located.
+2. **Job Title**: Provide the exact job title.
+3. **Dates of Employment**: Mention the start and end dates of employment.
+4. **Key Responsibilities and Achievements**:
+    - Focus on responsibilities and achievements that are most **relevant** to the job description.
+    - **Use keywords** from the job description to highlight my relevant experience.
+    - Prioritize measurable achievements and specific contributions.
+    - If applicable, quantify results (e.g., "improved efficiency by 30%", "increased revenue by 20%").
 
-To implement this:
-- If any of the work experience details (e.g., responsibilities, achievements) are not provided (i.e., `None`), omit those sections when filling out the template.
+Only include the details if they are available and relevant. If certain details are missing (e.g., responsibilities, achievements), skip them.
 
+Here's the relevant information:
 
-- **My information:**  
-  {experience_details}
+**My Experience**:  
+{experience_details}
 
-- **Job Description:**  
-  {job_description}
+**Job Description**:  
+{job_description}
+
+Please make sure the output is in the **format of a resume**, and that each job entry is formatted professionally with bullets and consistent style.
 """+ prompt_working_experience_template
 
 
