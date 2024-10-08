@@ -9,13 +9,15 @@ from webdriver_manager.chrome import ChromeDriverManager
 def create_driver_selenium():
     options = get_chrome_browser_options()  # Usa il metodo corretto per ottenere le opzioni
 
-    chrome_install = ChromeDriverManager().install()
-    folder = os.path.dirname(chrome_install)
-    chromedriver_path = os.path.join(folder, "chromedriver.exe")
+    # chrome_install = ChromeDriverManager().install()
+    # folder = os.path.dirname(chrome_install)
+    # chromedriver_path = os.path.join(folder, "chromedriver.exe")
 
 
-    service = ChromeService(executable_path=chromedriver_path)
-    return webdriver.Chrome(service=service, options=options)
+    # service = ChromeService(executable_path=chromedriver_path)
+    # return webdriver.Chrome(service=service, options=options)
+    print("Loading...")
+    return webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
 
 def HTML_to_PDF(FilePath):
     # Validazione e preparazione del percorso del file
