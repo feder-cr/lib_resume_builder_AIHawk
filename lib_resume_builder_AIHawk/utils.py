@@ -7,13 +7,14 @@ import time
 from webdriver_manager.chrome import ChromeDriverManager
 
 def create_driver_selenium():
-    options = get_chrome_browser_options()  # Usa il metodo corretto per ottenere le opzioni
+    options = get_chrome_browser_options()  # Use the method to get Chrome options
 
     chrome_install = ChromeDriverManager().install()
     folder = os.path.dirname(chrome_install)
-    chromedriver_path = os.path.join(folder, "chromedriver.exe")
-
-
+    if platform.system() == "Windows":
+        chromedriver_path = os.path.join(folder, "chromedriver.exe")
+    else:
+        chromedriver_path = os.path.join(folder, "chromedriver")
     service = ChromeService(executable_path=chromedriver_path)
     return webdriver.Chrome(service=service, options=options)
 
