@@ -1,3 +1,4 @@
+import platform
 import os
 import time
 from selenium.common.exceptions import WebDriverException
