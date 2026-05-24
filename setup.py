@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='lib_resume_builder_AIHawk',
-    version='0.1',
+    version='0.6.0',
     description='A package to generate AI-assisted resumes using GPT models',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
@@ -15,6 +15,7 @@ setup(
         'langchain-community',
         'langchain-core',
         'langchain-openai',
+        'langchain-ollama',
         'langchain-text-splitters',
         'langsmith',
         'openai',

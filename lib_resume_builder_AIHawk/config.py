@@ -9,6 +9,8 @@ class GlobalConfig:
         self.STYLES_DIRECTORY: Path = None
         self.LOG_OUTPUT_FILE_PATH: Path = None
         self.API_KEY: str = None
+        self.model: str = None
+        self.model_type: str = None
         self.html_template = """
                             <!DOCTYPE html>
                             <html lang="en">
