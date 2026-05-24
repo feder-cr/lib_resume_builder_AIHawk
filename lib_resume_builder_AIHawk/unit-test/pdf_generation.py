@@ -22,6 +22,7 @@ class TestPDFGeneration(unittest.TestCase):
 
         # Extract necessary data
         self.llm_api_key = self.secrets['llm_api_key']
+        self.llm_api_url = self.config.get('llm_api_url')
         self.output_path = Path("data_folder/output")
 
         self.plain_text_resume = yaml.dump(self.plain_text_resume, default_flow_style=False)
@@ -32,7 +33,7 @@ class TestPDFGeneration(unittest.TestCase):
         print(self.plain_text_resume)
         self.resume_object = Resume(self.plain_text_resume)
         self.resume_generator_manager = FacadeManager(
-            self.llm_api_key, self.style_manager, self.resume_generator, self.resume_object, self.output_path
+            self.llm_api_key, self.style_manager, self.resume_generator, self.resume_object, self.output_path, self.llm_api_url
         )
         os.system('cls' if os.name == 'nt' else 'clear')
         # Ensure style is selected
