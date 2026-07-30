@@ -102,9 +102,13 @@ This library drives a real Selenium session, which runs into the same problem as
 browser automation aimed at a real site: getting flagged as a bot. Most of what I work
 on now is [invisible_playwright](https://github.com/feder-cr/invisible_playwright), a
 Playwright replacement built on a Firefox patched at the source level, so the browser
-fingerprint is set inside the engine rather than injected from the page. Its
-[docs](https://github.com/feder-cr/invisible_playwright/blob/main/docs/playwright-detected-as-bot.md)
-cover the automation-detection side of this in more depth than makes sense here.
+fingerprint is set inside the engine rather than injected from the page. A few pages
+from its docs cover the automation-detection side of this in more depth than makes
+sense here:
+
+- [The checklist for being detected on one site](https://github.com/feder-cr/invisible_playwright/blob/main/docs/playwright-detected-as-bot.md)
+- [The $cdc_ variable Selenium leaves behind](https://github.com/feder-cr/invisible_playwright/blob/main/docs/cdc-variable-explained.md)
+- [Why automating the login form is riskier than reusing a session](https://github.com/feder-cr/invisible_playwright/blob/main/docs/automating-login-vs-session-reuse.md)
 
 ## License
 
