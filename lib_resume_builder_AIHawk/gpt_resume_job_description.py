@@ -178,9 +178,9 @@ class LoggerChatModel:
 
 
 class LLMResumeJobDescription:
-    def __init__(self, openai_api_key, strings):
-        self.llm_cheap = LoggerChatModel(ChatOpenAI(model_name="gpt-4o-mini", openai_api_key=openai_api_key, temperature=0.4))
-        self.llm_embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
+    def __init__(self, openai_api_base, openai_api_key, strings):
+        self.llm_cheap = LoggerChatModel(ChatOpenAI(model_name="gpt-4o-mini", openai_api_key=openai_api_key, openai_api_base=openai_api_base, temperature=0.4))
+        self.llm_embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key, openai_api_base=openai_api_base)
         self.strings = strings
 
     @staticmethod
