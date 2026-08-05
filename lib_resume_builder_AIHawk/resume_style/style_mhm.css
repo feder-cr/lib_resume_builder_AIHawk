@@ -1,0 +1,104 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.4;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    font-size: 1.0em;
+}
+
+header {
+    text-align: center;
+    margin: 20px 0;
+}
+
+header h1 {
+    font-size: 1.5em;
+    margin: 0;
+    font-weight: bold;
+}
+
+.contact-info {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    font-size: 0.9em;
+    color: #555;
+    margin-top: 5px;
+}
+
+.contact-info p, .contact-info a {
+    margin: 0;
+    text-decoration: none;
+    color: #333;
+    display: inline;
+}
+
+main {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+}
+
+section {
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 1.2em;
+    color: #333;
+    border-bottom: 2px solid #333;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.entry {
+    margin-bottom: 15px;
+}
+
+.entry-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+}
+
+.entry-details {
+    display: flex;
+    justify-content: space-between;
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+.entry-year {
+    font-size: 0.8em;
+}
+
+
+
+ul.compact-list {
+    padding-left: 20px;
+    list-style: disc;
+    margin: 5px 0;
+}
+
+ul.compact-list li {
+    margin-bottom: 5px;
+}
+
+.two-column {
+    display: flex;
+    gap: 20px;
+}
+
+.two-column ul {
+    width: 50%;
+}
+
+a {
+    color: #0073e6;
+}
+
+a:hover {
+    text-decoration: underline;
+}
